@@ -1,0 +1,667 @@
+wcs.py:
+    Say commands:
+        changerace
+        showxp
+        playerinfo
+        wcsrank
+        wcstop
+        spendskills
+        resetskills
+        wcsmenu
+        wcshelp
+        wcs
+        raceinfo
+        savexp
+        showskills
+        shopmenu
+        shopinfo
+    Client commands:
+        changerace
+        showxp
+        playerinfo
+        wcsrank
+        wcstop
+        spendskills
+        resetskills
+        wcsmenu
+        wcshelp
+        wcs
+        raceinfo
+        savexp
+        showskills
+        shopmenu
+        shopinfo
+    Console commands:
+        None
+    Python commands:
+        database:
+            database.__len__()
+            database.__contains__()
+            database.__del__()
+            database.execute(str statement[, tuple|list args=None])
+            database.fetchone()
+            database.fetchall()
+            database.save()
+            database.close()
+            database.getUserIdFromSteamId(str steamid)
+            database.addPlayer(str steamid, str name)
+            database.getRaceIdFromUserIdAndRace(int|str userid, str race)
+            database.addRaceIntoPlayer()
+            database.updateRank()
+            database.getRank(str steamid)
+
+        getPlayer(userid):
+            getPlayer(userid).__del__()
+            getPlayer(userid).__str__()
+            getPlayer(userid).__int__()
+            getPlayer(userid).save()
+            getPlayer(userid).changeRace(str race[, bool kill=True])
+            getPlayer(userid).giveXp(int amount[, reason=''])
+            getPlayer(userid).giveLevel(int amount)
+            getPlayer(userid).giveUnused(int amount)
+            getPlayer(userid).givePoint(str skill)
+            getPlayer(userid).showXp()
+            getPlayer(userid).showRank()
+            getPlayer(userid).delRace()
+            getPlayer(userid).delPlayer()
+
+        getPlayer(userid).player:
+            getPlayer(userid).player.update() #Call it only after after .save() function (else data will be lost)
+            getPlayer(userid).player.save()
+            getPlayer(userid).player.UserID
+            getPlayer(userid).player.steamid
+            getPlayer(userid).player.currace
+            getPlayer(userid).player.name
+            getPlayer(userid).player.totallevel
+            getPlayer(userid).player.lastconnect
+
+        getPlayer(userid).race:
+            getPlayer(userid).race.__contains__()
+            getPlayer(userid).race.update() #Call it only after after .save() function (else data will be lost)
+            getPlayer(userid).race.save()
+            getPlayer(userid).race.refresh()
+            getPlayer(userid).race.addXp(str amount[, str reason=''])
+            getPlayer(userid).race.addLevel(int amount)
+            getPlayer(userid).race.addUnused(int amount)
+            getPlayer(userid).race.addPoint(str skill)
+            getPlayer(userid).race.RaceID
+            getPlayer(userid).race.UserID
+            getPlayer(userid).race.race
+            getPlayer(userid).race.level
+            getPlayer(userid).race.xp
+            getPlayer(userid).race.unused
+            getPlayer(userid).race.skills
+
+        racedb:
+            racedb.getRace(str race) #Available in getPlayer(userid).race.racedb
+            racedb.getAll()
+            racedb.getAlias()
+
+		cmdreg:
+			cmdreg.changerace(int userid[, str args=None])
+			cmdreg.showxp(int userid[, str args=None])
+			cmdreg.playerinfo(int userid[, str args=None])
+			cmdreg.wcsrank(int userid[, str args=None])
+			cmdreg.wcstop(int userid[, str args=None])
+			cmdreg.spendskills(int userid[, str args=None])
+			cmdreg.resetskills(int userid[, str args=None])
+			cmdreg.wcsmenu(int userid[, str args=None])
+			cmdreg.wcshelp(int userid[, str args=None])
+			cmdreg.raceinfo(int userid[, str args=None])
+			cmdreg.savexp(int userid[, str args=None])
+			cmdreg.showskills(int userid[, str args=None])
+			cmdreg.shopmenu(int userid[, str args=None])
+			cmdreg.shopinfo(int userid[, str args=None])
+
+		CfgManager(str name)
+
+		tell(int|str|tuple|list userid, str text[, dict tokens={}[, str extra=''[, bool lng=True]]])
+
+		checkEvent(int userid, str event) #Real events (player_spawn, player_death, etc)
+		checkEvent1(int userid, str event) #Ultimate, ability, etc
+	Server variables:
+		bool wcs_gamestarted
+		str wcs_game
+	Python variables:
+		bool gamestarted
+		str curmap
+		str game
+
+wcs/logging.py:
+	Say commands:
+		None
+	Client commands:
+		None
+	Console commands:
+		None
+	Python commands:
+		log(str text[, int level=0])
+	Server variables:
+		None
+	Python variables:
+		None
+
+core/admin:
+	Say commands:
+		None
+	Client commands:
+		None
+	Console commands:
+		None
+	Python commands:
+		admins:
+			
+
+			admins.load()
+			admins.close() #wcs.py does this, no need
+			admins.save()
+
+		getPlayer(int userid):
+			getPlayer(int userid).__int__()
+			getPlayer(int userid).__str__()
+			getPlayer(int userid).__contains__(str item)
+			getPlayer(int userid).hasFlag(str flag)
+			getPlayer(int userid).setFlag(str flag[, bool value=1])
+	Server variables:
+		None
+	Python variables:
+		None
+
+core/changerace:
+	Say commands:
+		None
+	Client commands:
+		None
+	Console commands:
+		None
+	Python commands:
+		doCommand(int userid[, str args='changerace'])
+	Server variables:
+		None
+	Python variables:
+		callBack = pyFunc popupHandler
+
+core/dataAPI:
+	Say commands:
+		None
+	Client commands:
+		None
+	Console commands:
+		None
+	Python commands:
+		DB(str name):
+			DB(str name).__contains__(pyType item)
+			DB(str name).__iter__()
+			DB(str name).__list__()
+			DB(str name).__dict__()
+			DB(str name).__delitem__(pyType item)
+			DB(str name).__getitem__(pyType item)
+			DB(str name).__setitem__(pyType item, pyType value)
+			DB(str name).load()
+			DB(str name).save()
+	Server variables:
+		None
+	Python variables:
+		None
+
+core/expand:
+	Say commands:
+		None
+	Client commands:
+		None
+	Console commands:
+		None
+	Python commands:
+		spawn(int|tuple|list userid[, bool force=False])
+		strip(int|tuple|list userid)
+		drop(int|tuple|list userid, str|int|tuple|list weapon)
+		push(int|tuple|list userid, int xm[, int ym=0[, int zm=0]])
+		pushto(int|tuple|list userid, vecmath.Vector|list|tuple coord, int force)
+		damage(int|tuple|list victim, int damage[, int attacker=None])
+		gravity(int|tuple|list userid, int|float value)
+	Server variables:
+		None
+	Python variables:
+		None
+
+core/group:
+	Say commands:
+		None
+	Client commands:
+		None
+	Console commands:
+		None
+	Python commands:
+		groups:
+			groups.load()
+			groups.close()
+			groups.save()
+		getGroup(str group):
+			getGroup(str group).__contains__(str item)
+			getGroup(str group).__list__()
+			getGroup(str group).__iter__()
+			getGroup(str group).add(str item)
+			getGroup(str group).has(str item)
+			getGroup(str group).delete(str item)
+	Server variables:
+		None
+	Python variables:
+		None
+
+core/playerinfo:
+	Say commands:
+		None
+	Client commands:
+		None
+	Console commands:
+		None
+	Python commands:
+		doCommand(int userid)
+	Server variables:
+		None
+	Python variables:
+		callBack = pyFunc popupHandler
+
+core/raceinfo:
+	Say commands:
+		None
+	Client commands:
+		None
+	Console commands:
+		None
+	Python commands:
+		doCommand(int userid[, str args='raceinfo'[, bool race=True]])
+	Server variables:
+		None
+	Python variables:
+		callBack = pyFunc popupHandler
+
+core/resetskills:
+	Say commands:
+		None
+	Client commands:
+		None
+	Console commands:
+		None
+	Python commands:
+		doCommand(int userid)
+	Server variables:
+		None
+	Python variables:
+		callBack = pyFunc popupHandler
+
+core/savexp:
+	Say commands:
+		None
+	Client commands:
+		None
+	Console commands:
+		None
+	Python commands:
+		doCommand(int userid)
+	Server variables:
+		None
+	Python variables:
+		None
+
+core/shopinfo:
+	Say commands:
+		None
+	Client commands:
+		None
+	Console commands:
+		None
+	Python commands:
+		None
+	Server variables:
+		None
+	Python variables:
+		None
+
+core/shopmenu:
+	Say commands:
+		None
+	Client commands:
+		None
+	Console commands:
+		None
+	Python commands:
+		doCommand(int userid[, str args='shopmenu'])
+		doCommand1(int userid, str args)
+		checkEvent(int userid, str event)
+	Server variables:
+		None
+	Python variables:
+		dict items
+		callBack = pyFunc popupHandler
+		callBack1 = pyFunc popupHandler1
+
+core/showskills:
+	Say commands:
+		None
+	Client commands:
+		None
+	Console commands:
+		None
+	Python commands:
+		doCommand(int userid)
+	Server variables:
+		None
+	Python variables:
+		None
+
+core/spendskills:
+	Say commands:
+		None
+	Client commands:
+		None
+	Console commands:
+		None
+	Python commands:
+		doCommand(int userid)
+	Server variables:
+		None
+	Python variables:
+		callBack = pyFunc popupHandler
+
+core/sqliteAPI:
+	Say commands:
+		None
+	Client commands:
+		None
+	Console commands:
+		None
+	Python commands:
+		SQLiteAPI(str name):
+			SQLiteAPI(str name).__del__()
+			SQLiteAPI(str name).connect()
+			SQLiteAPI(str name).execute(str statement[, tuple|list args=None])
+			SQLiteAPI(str name).fetchone()
+			SQLiteAPI(str name).fetchall()
+			SQLiteAPI(str name).save()
+			SQLiteAPI(str name).close()
+			SQLiteAPI(str name).create() #Make the structure
+	Server variables:
+		None
+	Python variables:
+		None
+
+core/wcsgroup:
+	Say commands:
+		None
+	Client commands:
+		None
+	Console commands:
+		None
+	Python commands:
+		addUser(int userid)
+		delUser(int userid)
+		existsUser(int userid)
+		setUserid(int userid, all key, all value)
+		getUser(int userid, all key)
+	Server variables:
+		None
+	Python variables:
+		None
+
+core/wcshelp:
+	Say commands:
+		None
+	Client commands:
+		None
+	Console commands:
+		None
+	Python commands:
+		doCommand(int userid)
+	Server variables:
+		None
+	Python variables:
+		None
+
+core/wcsmenu:
+	Say commands:
+		None
+	Client commands:
+		None
+	Console commands:
+		None
+	Python commands:
+		doCommand(int userid)
+	Server variables:
+		None
+	Python variables:
+		callBack = pyFunc popupHandler
+
+core/wcstop:
+	Say commands:
+		None
+	Client commands:
+		None
+	Console commands:
+		None
+	Python commands:
+		doCommand(int userid[, str args='wcstop'])
+		wcsRank(int userid[, str args='wcsrank'])
+	Server variables:
+		None
+	Python variables:
+		callBack = pyFunc popupHandler
+
+core/welcome:
+	Say commands:
+		None
+	Client commands:
+		None
+	Console commands:
+		None
+	Python commands:
+		doCommand(int userid)
+	Server variables:
+		None
+	Python variables:
+		None
+
+addons/ability:
+	Say commands:
+		None
+	Client commands:
+		None
+	Console commands:
+		None
+	Python commands:
+		None
+	Server variables:
+		None
+	Python variables:
+		None
+
+addons/admin:
+	Say commands:
+		wcsadmin #admin, flag: wcsadmin
+	Client commands:
+		wcsadmin #admin, flag: wcsadmin
+		wcsgivexp #admin, flag: wcsadmin, wcsgivexp
+		wcsgivelevel #admin, flag: wcsadmin, wcsgivelevel
+		wcsgivecash #admin, flag: wcsadmin, wcsgivecash
+	Console commands:
+		None
+	Python commands:
+		None
+	Server variables:
+		None
+	Python variables:
+		None
+
+addons/cmdskills:
+	Say commands:
+		None
+	Client commands:
+		None
+	Console commands:
+		wcs_mole_activate <userid>
+		wcs_warden <userid> <duration> <damage> <radius> <team target> <team target number> <x> <y> <z> <warden round>
+		wcs_trap <userid> <duration> <damage> <radius> <team target> <team target number> <x> <y> <z> <warden round>
+		wcs_heal <userid> <duration> <damage> <radius> <team target> <team target number> <x> <y> <z> <warden round>
+		wcs_regeneration <userid> <amount> <time> <maxhp> <maxheal> <radius>
+	Python commands:
+		None
+	Server variables:
+		None
+	Python variables:
+		None
+
+addons/freelevels:
+	Say commands:
+		None
+	Client commands:
+		None
+	Console commands:
+		None
+	Python commands:
+		None
+	Server variables:
+		None
+	Python variables:
+		None
+
+addons/gold:
+	Say commands:
+		None
+	Client commands:
+		None
+	Console commands:
+		None
+	Python commands:
+		None
+	Server variables:
+		int wcs_gold_gain
+		int wcs_gold_headshot
+		int wcs_gold_knife
+	Python variables:
+		None
+
+addons/:
+	Say commands:
+		None
+	Client commands:
+		None
+	Console commands:
+		None
+	Python commands:
+		None
+	Server variables:
+		None
+	Python variables:
+		None
+
+addons/:
+	Say commands:
+		None
+	Client commands:
+		None
+	Console commands:
+		None
+	Python commands:
+		None
+	Server variables:
+		None
+	Python variables:
+		None
+
+addons/:
+	Say commands:
+		None
+	Client commands:
+		None
+	Console commands:
+		None
+	Python commands:
+		None
+	Server variables:
+		None
+	Python variables:
+		None
+
+addons/:
+	Say commands:
+		None
+	Client commands:
+		None
+	Console commands:
+		None
+	Python commands:
+		None
+	Server variables:
+		None
+	Python variables:
+		None
+
+addons/:
+	Say commands:
+		None
+	Client commands:
+		None
+	Console commands:
+		None
+	Python commands:
+		None
+	Server variables:
+		None
+	Python variables:
+		None
+
+addons/:
+	Say commands:
+		None
+	Client commands:
+		None
+	Console commands:
+		None
+	Python commands:
+		None
+	Server variables:
+		None
+	Python variables:
+		None
+
+addons/:
+	Say commands:
+		None
+	Client commands:
+		None
+	Console commands:
+		None
+	Python commands:
+		None
+	Server variables:
+		None
+	Python variables:
+		None
+
+addons/:
+	Say commands:
+		None
+	Client commands:
+		None
+	Console commands:
+		None
+	Python commands:
+		None
+	Server variables:
+		None
+	Python variables:
+		None
+
+
+
+
+
+
+
+
+
+
+
+
+
+

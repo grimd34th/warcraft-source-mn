@@ -1,0 +1,8 @@
+Support to Day of Defeat: Source (Half-Life 2: Deathmatch, Pirates, Vikings, and Knights & Team Fortress 2 (more to come...) if I'm able to it)
+Race catagories (easier management of races)
+A server-command to: Set players amount of shopitems, give shop items
+Add a wcs_takelevel/xp to be able to take xp (same syntax as wcs_givelevel/xp)
+Remove all the es_key* commands and replace them with wcsgroup
+Add a wcs_rapidfire <userid> <rate> command
+Add a wcs_recoil <userid> <value> command
+

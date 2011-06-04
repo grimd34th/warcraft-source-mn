@@ -1,0 +1,53 @@
+block load
+{
+es_set wcs_silent 0
+es_set wcs_dead 0
+es_set wcs_silentdis 0
+}
+ 
+block loop
+{
+es wcsgroup get silentwalk wcs_silent event_var(userid)
+if (server_var(wcs_silent) = 1) do
+   {
+    es playerget isdead wcs_dead event_var(userid)
+    if (server_var(wcs_dead) = 0) do
+       {
+        es_setplayerprop server_var(wcs_userid) CBasePlayer.m_fFlags 8
+        es_delayed 1 es_doblock wcs/tools/amulet/loop
+       }
+   }
+}
+ 
+event player_death
+{
+es wcsgroup set silentwalk event_var(userid) 0
+}
+ 
+ 
+event player_say
+{
+if (event_var(text) = !disable) do
+   {
+    es wcsgroup get silentwalk wcs_silent event_var(userid)
+    if (server_var(wcs_silent) = 1) do
+       {
+        es_setplayerprop server_var(wcs_userid) CBasePlayer.m_fFlags 1
+        es wcsgroup set silentwalk event_var(userid) 0
+        es wcsgroup set silentwalkdis event_var(userid) 1
+        es_tell event_var(userid) #multi #lightgreenYou disabled #greenAmulet of Cat
+       }
+   }
+if (event_var(text) = !enable) do
+   {
+    es wcsgroup get silentwalkdis wcs_silentdis event_var(userid)
+    if (server_var(wcs_silentdis) = 1) do
+       {
+        es_setplayerprop server_var(wcs_userid) CBasePlayer.m_fFlags 8
+        es wcsgroup set silentwalk event_var(userid) 1
+        es wcsgroup set silentwalkdis event_var(userid) 0
+        es_tell event_var(userid) #multi #lightgreenYou enabled #greenAmulet of Cat
+        es_delayed 1 es_doblock wcs/tools/amulet/loop
+       }
+  }
+}

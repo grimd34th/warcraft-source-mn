@@ -1,0 +1,129 @@
+
+Contents
+-- 1 - Introduction
+-- 2 - Commands
+---- 2.1 - 
+-- 3 - Variables
+---- 3.1 - 
+
+
+
+1 - Introduction
+--------------------------------------------------------------------------------
+    This is a usefull list of available commands/variables to help with
+	difference tasks for scripters/race makers/ addons-tools makers.
+	This require that you, the reader/coder/what now to be able to code in ESS
+	without needing to be explained in details.
+
+	Welcome.
+
+2 - Commands
+--------------------------------------------------------------------------------
+    2.1 - 
+
+3 - Variables
+--------------------------------------------------------------------------------
+    3.1 - 
+
+
+
+wcs_givexp <userid> <amount> <[reason]>
+wcs_givelevel <userid> <amount>
+wcs_getinfo <userid> <var> <info> <race/player/racename>
+Available info:
+->player:
+--->steamid
+--->currace
+--->name
+--->totallevel
+--->lastconnect
+->race/racename:
+--->name
+--->skills
+--->level
+--->xp
+--->unused
+wcs_decimal <var> <amount>
+wcs damage <userid> <attacker> <damage>
+wcs explode <userid> <targetid> <magnitude> <radius>
+wcs spawn <userid> <[force]>
+wcs strip <userid>
+wcs drop <userid> <weapon/slot/tag>
+wcs push <userid> <x force> <[y force]> <[z force]>
+wcs pushto <userid> <x,y,z> <force>
+wcs gravity <userid> <value>
+wcs_dalias <alias> <value1> <[value2]> <[value3]> ...
+Every valueX gets set to wcs_tmpX
+wcs_debug <level> <text>
+wcs_foreach player <var> <identifier> <"command">
+wcs_foreach weapon <var> <identifier> <"command">
+wcs_foreach token <var> <identifier> <"command">
+wcs_getlanguage <var> <userid> <text>
+wcs_nearcoord <var> <identifier> <x coord> <y coord> <z coord> <range> <"command to run">
+wcs_restrict_purge <userid>
+wcs_restrict <userid> restrict <weapon>
+wcs_restrict <userid> allow <weapon> <give> <knife>
+wcs_restrict <userid> addallow <weapon>
+wcs_restrict <userid> knife
+wcs_restrict <userid> knifeonly
+wcs_removefx <type> <userid>
+Available type:
+->freeze
+->speed
+->god
+wcs_setfx <type> <userid> <operator> <params> <[time]>
+Available type:
+->freeze
+->jetpack
+->god
+->noblock
+->burn
+->speed
+->invis
+->invisp
+->health
+->armor
+->cash
+->gravity
+->ulti_immunity
+->disguiser
+->1stclip
+->2ndclip
+->longjump
+Available operator:
+->+
+->-
+->=
+wcsgroup get <key> <var> <userid> <[team]>
+wcsgroup set <key> <userid> <value> <[team]>
+wcs_xalias <alias> <["command"]>
+wcs_xcentertell <userid> <text> <[arg]> <[value]>...
+wcsx get <key> <var> <userid>
+wcsx set <key> <userid> <amount> <[amount1]> <[amount2]> <[amount3]>
+wcsx math <key> <userid> <operator> <amount>
+Available operators:
+->+
+->-
+->=
+wcsx call <key> <userid>
+Available keys:
+->http://python.eventscripts.com/pages/Playerlib
+wcsx create <var> <value1> <[value2]> <[value3]>...
+wcsx split <values> <var1> <[var2]> <[var3]>...
+wcs_xrestrict <restrict/allow> <userid> <weapon>
+Available weapon:
+->http://python.eventscripts.com/pages/Category:Weaponlib_weapon_list
+wcs_xtell <userid> <text> <[arg]> <[value]>...
+wcs_xweapon <key> <var> <weapon>
+Available key:
+->clip
+->maxammo
+->name
+->prop
+->slot
+->tags
+wcs_mole_activate <userid>
+wcs_warden <userid> <duration> <damage> <radius> <team target> <team targetn> <x> <y> <z> <warden round>
+wcs_trap <userid> <duration> <damage> <radius> <team target> <team targetn> <x> <y> <z> <warden round>
+wcs_heal <userid> <duration> <health> <radius> <team target> <team targetn> <x> <y> <z> <warden round>
+wcs_regeneration <userid> <amount> <time> <maxhp> <maxheal> <radius>

@@ -1,0 +1,11 @@
+event player_death
+{	
+	es_xset wcs_tmp 0
+	es wcsgroup get helme wcs_tmp event_var(userid)
+	if (server_var(wcs_tmp) = 1) do
+	{
+		es_setplayerprop event_var(userid) CBaseAnimating.m_nHitboxSet 0
+		es wcsgroup set helme event_var(userid) 0
+	}
+	es wcsgroup set swardinvul event_var(userid) 0
+}

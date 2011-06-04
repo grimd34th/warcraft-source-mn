@@ -1,0 +1,89 @@
+block load
+{
+	es_xexists ex command wcs_restrict
+	if (server_var(ex) = 0) then es_xregcmd wcs_restrict wcs/tools/restrict/wcs_restrict "Restriction Command."
+	es_xexists ex command wcs_restrict_purge
+	if (server_var(ex) = 0) then es_xregcmd wcs_restrict_purge wcs/tools/restrict/wcs_restrict_purge "Restriction Purge Command."
+}
+
+block wcs_restrict_purge
+{
+	es_xgetargv wcs_res_ui 1
+	es_exists ex userid server_var(wcs_res_ui)
+	ifx true(ex) do
+	{
+		es wcs_xrestrict allow server_var(wcs_res_ui) #all
+	}
+}
+
+block wcs_restrict
+{
+	es_xgetargv wcs_res_ui 1
+	es_xgetargv wcs_res_type 2
+	es_xgetargv wcs_res_wep 3
+	es_xgetargv wcs_res_give 4
+	es_xgetargv wcs_res_knife 5
+
+	es_exists ex userid server_var(wcs_res_ui)
+	ifx true(ex) do
+	{
+		if (server_var(wcs_res_type) == restrict) then wcs_xrestrict restrict server_var(wcs_res_ui) server_var(wcs_res_wep)
+		if (server_var(wcs_res_type) == allow) do
+		{
+			es playerget c4 server_var(wcs_res_ui) wcs_tmp
+			es wcs_xrestrict restrict server_var(wcs_res_ui) #all
+			ifx true(wcs_tmp) do
+			{
+				es wcs give server_var(wcs_res_ui) weapon_c4
+				//es_give server_var(wcs_res_ui) weapon_c4
+			}
+			es wcs_xrestrict allow server_var(wcs_res_ui) server_var(wcs_res_wep)
+			es wcs_xrestrict allow server_var(wcs_res_ui) #grenade
+
+			ifx true(wcs_res_knife) do
+			{
+				es wcs_xrestrict allow server_var(wcs_res_ui) #melee
+				//es_give server_var(wcs_res_ui) weapon_knife
+				wcs_foreach weapon wcs_weapon #melee "es wcs give server_var(wcs_res_ui) server_var(wcs_weapon)"
+				//wcs_foreach weapon wcs_weapon #melee "es_give server_var(wcs_res_ui) server_var(wcs_weapon)"
+			}
+			ifx true(wcs_res_give) do
+			{
+				es_xstring wcs_res_wep replace "weapon_" ""
+				es_format wcs_res_wep "weapon_%1" server_var(wcs_res_wep)
+				es wcs give server_var(wcs_res_ui) server_var(wcs_res_wep)
+				//es_give server_var(wcs_res_ui) server_var(wcs_res_wep)
+			}
+		}
+		if (server_var(wcs_res_type) == addallow) then wcs_xrestrict allow server_var(wcs_res_ui) server_var(wcs_res_wep)
+		if (server_var(wcs_res_type) == knife) do
+		{
+			es wcs_xrestrict restrict server_var(wcs_res_ui) #primary
+			es wcs_xrestrict restrict server_var(wcs_res_ui) #secondary
+			es wcs_xrestrict restrict server_var(wcs_res_ui) #tool
+			es wcs_xrestrict allow server_var(wcs_res_ui) #melee
+			es wcs_xrestrict allow server_var(wcs_res_ui) #grenade
+			//foreach weapon wcs_weapon #melee "es wcs give server_var(wcs_res_ui) server_var(wcs_weapon)"
+			//wcs_foreach weapon wcs_weapon #melee "es wcs give server_var(wcs_res_ui) server_var(wcs_weapon)"
+			//wcs_foreach weapon wcs_weapon #melee "es_give server_var(wcs_res_ui) server_var(wcs_weapon)"
+			if (server_var(wcs_game) == cstrike) then wcs give server_var(wcs_res_ui) weapon_knife
+			if (server_var(wcs_game) == dod) then wcs give server_var(wcs_res_ui) weapon_amerknife
+			if (server_var(wcs_game) == dod) then wcs give server_var(wcs_res_ui) weapon_spade
+		}
+		if (server_var(wcs_res_type) == knifeonly) do
+		{
+			es wcs_xrestrict restrict server_var(wcs_res_ui) #primary
+			es wcs_xrestrict restrict server_var(wcs_res_ui) #secondary
+			es wcs_xrestrict restrict server_var(wcs_res_ui) #grenade
+			es wcs_xrestrict restrict server_var(wcs_res_ui) #tool
+			es wcs_xrestrict allow server_var(wcs_res_ui) #melee
+			es wcs_xrestrict allow server_var(wcs_res_ui) #objective
+			//foreach weapon wcs_weapon #melee "es wcs give server_var(wcs_res_ui) server_var(wcs_weapon)"
+			//wcs_foreach weapon wcs_weapon #melee "es wcs give server_var(wcs_res_ui) server_var(wcs_weapon)"
+			//wcs_foreach weapon wcs_weapon #melee "es_give server_var(wcs_res_ui) server_var(wcs_weapon)"
+			if (server_var(wcs_game) == cstrike) then wcs give server_var(wcs_res_ui) weapon_knife
+			if (server_var(wcs_game) == dod) then wcs give server_var(wcs_res_ui) weapon_amerknife
+			if (server_var(wcs_game) == dod) then wcs give server_var(wcs_res_ui) weapon_spade
+		}
+	}
+}

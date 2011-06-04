@@ -1,0 +1,374 @@
+
+Contents
+-- 1 - Introduction
+-- 2 - Variables
+---- 2.1 - wcs
+-- 3 - Functions
+---- 3.1 - wcs
+-- 4 - Classes
+---- 4.1 - wcs
+------ 4.1.1 - ini
+-------- 4.1.1.1 - Variables
+-------- 4.1.1.2 - Functions
+
+
+
+1 - Introduction
+--------------------------------------------------------------------------------
+    This is a usefull list of available Functions/variables to help with
+    difference tasks for scripters/race makers/ addons-tools makers.
+    This require that you, the reader/coder/what now to be able to code in ESS
+    without needing to be explained in details.
+
+    Welcome.
+
+2 - Variables
+--------------------------------------------------------------------------------
+    2.1 - wcs
+    ----------------------------------------------------------------------------
+    str version - The current version of the mod
+    str author - The authors of the mod
+    str game - The game which is running the mod
+    str standardrace - The first race from ini/races.ini
+
+3 - Functions
+--------------------------------------------------------------------------------
+    3.1 - wcs
+    ----------------------------------------------------------------------------
+    pyFunc strings(int userid[, dict tokens={}[, str lang=en]])
+    
+
+4 - Classes
+--------------------------------------------------------------------------------
+    4.1 - wcs
+    ----------------------------------------------------------------------------
+        4.1.1 - ini
+        ------------------------------------------------------------------------
+            4.1.1.1 - Variables
+            --------------------------------------------------------------------
+                4.1.1.1.1 - wcs.ini.races
+                    ------------------------------------------------------------
+                    Return: dict
+                    Notes: The races gathered by ConfigObj from ini/races.ini
+
+                4.1.1.1.2 - wcs.ini.items
+                    ------------------------------------------------------------
+                    Return: dict
+                    Notes: The items gathered by ConfigObj from ini/items.ini
+
+            4.1.1.2 - Functions
+            --------------------------------------------------------------------
+                4.1.1.2.1 - wcs.ini.getRaces
+                    ------------------------------------------------------------
+                    Return: dict
+                    Notes: Return the wcs.ini.races-dict
+                4.1.1.2.2 - wcs.ini.getItems
+                    ------------------------------------------------------------
+                    Return: dict
+                    Notes: Return the wcs.ini.items-dict
+
+        4.1.2 - itemdb
+        ------------------------------------------------------------------------
+            4.1.2.1 - Variables
+            --------------------------------------------------------------------
+                4.1.2.1.1 - wcs.itemdb.items
+                ----------------------------------------------------------------
+                    Return: dict
+                    Notes: The return of wcs.ini.getItems
+
+                4.1.2.1.2 - wcs.itemdb.sectionlist
+                ----------------------------------------------------------------
+                    Return: list
+                    Notes: The sections in self.items
+
+                4.1.2.1.3 - wcs.itemdb.itemlist
+                ----------------------------------------------------------------
+                    Return: list
+                    Notes: The items in self.items
+
+                4.1.2.1.4 - wcs.itemdb.itemtosection
+                ----------------------------------------------------------------
+                    Return: dict
+                    Notes: The item-to-section-converter
+
+            4.1.2.2 - Functions
+            --------------------------------------------------------------------
+                4.1.2.2.1 - wcs.itemdb.__contains__
+                ----------------------------------------------------------------
+                    Howto: wcs.itemdb.__contains__(str|int item)
+                    Return: bool
+                    Notes: Check to see if a item is in self.items
+
+                4.1.2.2.2 - wcs.itemdb.__iter__
+                ----------------------------------------------------------------
+                    Howto: wcs.itemdb.__iter__()
+                    Return: yield
+                    Notes: Iter through self.items
+
+                4.1.2.2.3 - wcs.itemdb.keys
+                ----------------------------------------------------------------
+                    Howto: wcs.itemdb.keys()
+                    Return: list
+                    Notes: Get the top-level of self.items
+
+                4.1.2.2.4 - wcs.itemdb.getSection
+                ----------------------------------------------------------------
+                    Howto: wcs.itemdb.getSection(str section)
+                    Return: dict
+                    Notes: Get all items in that section
+
+                4.1.2.2.5 - wcs.itemdb.getItem
+                ----------------------------------------------------------------
+                    Howto: wcs.itemdb.getItem(str item)
+                    Return: dict
+                    Notes: Get all items in that item
+
+                4.1.2.2.6 - wcs.itemdb.getSections
+                ----------------------------------------------------------------
+                    Howto: wcs.itemdb.getSections()
+                    Return: list
+                    Notes: Get all the sections in self.sectionlist
+
+                4.1.2.2.7 - wcs.itemdb.getItems
+                ----------------------------------------------------------------
+                    Howto: wcs.itemdb.getItems()
+                    Return: list
+                    Notes: Get all the items in self.itemlist
+
+                4.1.2.2.8 - wcs.itemdb.getSectionFromItem
+                ----------------------------------------------------------------
+                    Howto: wcs.itemdb.getSectionFromItem(str item)
+                    Return: str
+                    Notes: Get the section from where the item is in
+
+                4.1.2.2.9 - wcs.itemdb.getAll
+                ----------------------------------------------------------------
+                    Howto: wcs.itemdb.getAll()
+                    Return: dict
+                    Notes: Get all the sections and items in self.items
+
+        4.1.3 - racedb
+        ------------------------------------------------------------------------
+            4.1.3.1 - Variables
+            --------------------------------------------------------------------
+                4.1.3.1.1 - wcs.racedb.races 
+                    ------------------------------------------------------------
+                    Return: dict
+                    Notes: The race gathered from wcs.ini.getRaces
+
+            4.1.3.2 - Functions
+            --------------------------------------------------------------------
+                4.1.3.2.1 - wcs.racedb.__contains__
+                ----------------------------------------------------------------
+                    Howto: wcs.racedb.__contains__(str race)
+                    Return: bool
+                    Notes: Check to see if a race is in self.races
+
+                4.1.3.2.2 - wcs.racedb.__contains__
+                ----------------------------------------------------------------
+                    Howto: wcs.racedb.__iter__()
+                    Return: yield
+                    Notes: Iter through self.races
+
+                4.1.3.2.3 - wcs.racedb.getRace
+                ----------------------------------------------------------------
+                    Howto: wcs.racedb.getRace(str race)
+                    Return: dict
+                    Notes: Get the race information
+
+                4.1.3.2.4 - wcs.racedb.getAll
+                ----------------------------------------------------------------
+                    Howto: wcs.racedb.getAll()
+                    Return: dict
+                    Notes: Get all the races from self.races
+
+                4.1.3.2.5 - wcs.racedb.getAlias
+                ----------------------------------------------------------------
+                    Howto: wcs.racedb.getAlias()
+                    Return: dict
+                    Notes: Get all the available race/shopalias
+
+                4.1.3.2.6 - wcs.racedb.index
+                ----------------------------------------------------------------
+                    Howto: wcs.racedb.index(str race)
+                    Return: int
+                    Notes: Get the index of a race
+
+        4.1.4 - database
+        ------------------------------------------------------------------------
+            4.1.4.1 - Variables
+            --------------------------------------------------------------------
+                4.1.4.1.1 - wcs.database.connection
+                ----------------------------------------------------------------
+                    Return: pyFunc
+                    Notes: Make changes to the database (BAD!)
+
+                4.1.4.1.2 - wcs.database.cursor
+                ----------------------------------------------------------------
+                    Return: pyFunc
+                    Notes: Make changes to the database (BAD!)
+
+            4.1.4.2 - Functions
+            --------------------------------------------------------------------
+                4.1.4.2.1 - wcs.database.__len__
+                ----------------------------------------------------------------
+                    Howto: wcs.database.__len__()
+                    Return: int
+                    Notes: Get the current lenght of the database
+
+                4.1.4.2.2 - wcs.database.__contains__
+                ----------------------------------------------------------------
+                    Howto: wcs.database.__contains__(int|str item)
+                    Return: bool
+                    Notes: Check if a steamid/userid are in the database
+
+                4.1.4.2.3 - wcs.database.__del__
+                ----------------------------------------------------------------
+                    Howto: wcs.database.__del__()
+                    Return: None
+                    Notes: Delete the database object (BAD!)
+
+                4.1.4.2.4 - wcs.database.execute
+                ----------------------------------------------------------------
+                    Howto: wcs.database.execute(str statement[, tuple args=None])
+                    Return: None
+                    Notes: Execute a SQL statement in the database
+
+                4.1.4.2.5 - wcs.database.fetchone
+                ----------------------------------------------------------------
+                    Howto: wcs.database.fetchone()
+                    Return: int|str|None
+                    Notes: Fetch a item from a SQL statement
+
+                4.1.4.2.6 - wcs.database.fetchall
+                ----------------------------------------------------------------
+                    Howto: wcs.database.fetchall()
+                    Return: list
+                    Notes: Fetch a list of items from a SQL statement
+
+                4.1.4.2.7 - wcs.database.save
+                ----------------------------------------------------------------
+                    Howto: wcs.database.save()
+                    Return: None
+                    Notes: Saves the database (can give lagg)
+
+                4.1.4.2.8 - wcs.database.close
+                ----------------------------------------------------------------
+                    Howto: wcs.database.close()
+                    Return: None
+                    Notes: Closes to the database (BAD!)
+
+                4.1.4.2.9 - wcs.database.getUserIdFromSteamId
+                ----------------------------------------------------------------
+                    Howto: wcs.database.getUserIdFromSteamId(str steamid)
+                    Return: int|None
+                    Notes: Get the unique UserID from the database
+
+                4.1.4.2.10 - wcs.database.addPlayer
+                ----------------------------------------------------------------
+                    Howto: wcs.database.addPlayer(str steamid, str name)
+                    Return: int|None
+                    Notes: Adds the player in the database and return the rowid
+
+                4.1.4.2.11 - wcs.database.getRaceIdFromUserIdAndRace
+                ----------------------------------------------------------------
+                    Howto: wcs.database.getRaceIdFromUserIdAndRace(str UserID, str race)
+                    Return: int|None
+                    Notes: Adds a race into the database
+
+                4.1.4.2.12 - wcs.database.updateRank
+                ----------------------------------------------------------------
+                    Howto: wcs.database.updateRank()
+                    Return: None
+                    Notes: Updates the ranks (can give lagg)
+
+                4.1.4.2.13 - wcs.database.getRank
+                ----------------------------------------------------------------
+                    Howto: wcs.database.getRank(str steamid)
+                    Return: int
+                    Notes: Returns the rank of a player
+
+        4.1.4 - 
+        ------------------------------------------------------------------------
+            4.1.3.1 - Variables
+            --------------------------------------------------------------------
+                
+
+            4.1.3.2 - Functions
+            --------------------------------------------------------------------
+                
+
+        4.1.4 - 
+        ------------------------------------------------------------------------
+            4.1.3.1 - Variables
+            --------------------------------------------------------------------
+                
+
+            4.1.3.2 - Functions
+            --------------------------------------------------------------------
+                
+
+        4.1.4 - 
+        ------------------------------------------------------------------------
+            4.1.3.1 - Variables
+            --------------------------------------------------------------------
+                
+
+            4.1.3.2 - Functions
+            --------------------------------------------------------------------
+                
+
+        4.1.4 - 
+        ------------------------------------------------------------------------
+            4.1.3.1 - Variables
+            --------------------------------------------------------------------
+                
+
+            4.1.3.2 - Functions
+            --------------------------------------------------------------------
+                
+
+        4.1.4 - 
+        ------------------------------------------------------------------------
+            4.1.3.1 - Variables
+            --------------------------------------------------------------------
+                
+
+            4.1.3.2 - Functions
+            --------------------------------------------------------------------
+                
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

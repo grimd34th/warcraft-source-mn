@@ -1,0 +1,364 @@
+
+Contents
+-- 1 - Introduction
+---- 1.1 - Why use this WCS?
+-- 2 - Basic Usage
+---- 2.1 - Files
+------ 2.1.1 - Addons
+------ 2.1.2 - Core
+------ 2.1.3 - Tools
+------ 2.1.4 - What else needs to be included?
+-- 3 - Provided Functions and Variables
+---- 3.1 - Access
+---- 3.2 - Functions
+------ 3.2.1 - Basic Functions
+------ 3.2.2 - Player Functions
+-------- 3.2.2.1 - getPlayer
+---------- 3.2.2.1.1 - player
+---------- 3.2.2.1.2 - race
+------ 3.2.3 - Database Function
+-- 4 - Notes
+---- 4.1 - Installation Method
+---- 4.2 - Thanks to
+
+
+
+1 - Introduction
+--------------------------------------------------------------------------------
+    WCS enables the fun for CS:S! You can choose between many races from the
+    Warcraft 3 universum (plus custom made) and level your 'character' to get
+    advantage of many special usefull skills.
+
+    1.1 - Why use this WCS?
+    ----------------------------------------------------------------------------
+    This is fully written (except the races and some skills) in Python for
+    speed and functionality. And as a bonus, it got lots of extra build-in
+    addons and tools to make your server unique and help Races-coders with their
+    task.
+    The system (race template) is easy to understand and to use. There's a few
+    other ways to do commands (racealias, etc.) but they got a very good purpose.
+
+2 - Basic usage
+--------------------------------------------------------------------------------
+    2.1 - Files
+    ----------------------------------------------------------------------------
+        2.1.1 - Addons
+        ------------------------------------------------------------------------
+        Addons require a __init__.py file and a <name>.py or a es_<name>.txt
+        file, and a located in
+        ../addons/eventscripts/wcs/addons/<name>/
+
+        To make them load, add <name> in the
+        ../addons/eventscripts/wcs/config/addons.cfg file. Comment them by
+        adding "//" (without ") in front of the line.
+
+        Addons-files are files who's supposed to do something with players (eg,
+        randomrace). These files shouldn't be used in any other files.
+
+        2.1.2 - Core
+        ------------------------------------------------------------------------
+        Core-files should not be added unless it's shipped with the official
+        release of WCS $version.
+
+        Core-files does get imported by wcs.py, so import wcs instead of
+        importing the module itself.
+
+        2.1.3 - Tools
+        ------------------------------------------------------------------------
+        Tools require a <name>.py or a es_<name>.txt
+        file, and a located in
+        ../addons/eventscripts/wcs/tools/<name>/
+
+        To make them load, add <name> in the
+        ../addons/eventscripts/wcs/config/tools.cfg file. Comment them by
+        adding "//" (without ") in front of the line.
+
+        Tools-files are files who's supposed to help race-coders with difficult
+        tasks or to make it possible to use Python functions in ESS-scripts/races.
+
+        2.1.4 - What else needs to be included?
+        ------------------------------------------------------------------------
+        A (easy-to-understand) description to how to install them and make
+        them work.
+        .cfg files should not be shipped, but created with the build-in
+        CfgManager(name) or cfglib.
+
+3 - Provided Functions and Variables
+--------------------------------------------------------------------------------
+    3.1 - Access
+    ----------------------------------------------------------------------------
+    To access the wcs file, simple use
+    from wcs import wcs
+    somewhere in the top of the script.
+    For ESS-scripts, it's currently not possible to access the wcs-functions.
+    This may change in the future.
+
+    3.2 - Functions
+    ----------------------------------------------------------------------------
+        3.2.1 - Basic Functions
+        ------------------------------------------------------------------------
+        wcs.strings(str text [, dict tokens={} [, str lang='en']])
+        Return: str
+        Info: Multi-language support
+
+        wcs.tell(str|int|list|tuple userid, str text [, dict tokens={}])
+
+        3.2.2 - Player Functions
+        ------------------------------------------------------------------------
+        player = wcs.getPlayer(int|str userid)
+        Return: PlayerObject-object
+        Info: None
+
+        player.__del__()
+        Return: None
+        Info: Will delete the object and insert all the data in the SQL-file.
+
+        player.__str__()
+        Return: str
+        Info: Will return the player's userid.
+
+        player.__int__()
+        Return: int
+        Info: Will return the player's userid.
+
+        player.save()
+        Return: None
+        Info: Will insert all the data in the SQL-file.
+
+        player.changeRace(str racename [, kill=True])
+        Return: None
+        Info: Will change the player's race.
+              Will also suicide them if needed.
+
+        player.giveXp(int|str amount [, str reason=''])
+        Return: int
+        Info: Will add xp to the player.
+
+        player.giveLevel(int|str amount)
+        Return: int
+        Info: Will add level to the player.
+
+        player.giveUnused(int|str amount)
+        Return: int
+        Info: Will add unused points to the player.
+
+        player.givePoint(int skill)
+        Return: int
+        Info: Will add a point to the player's skill if the player got atleast 1 unused.
+
+        player.showXp()
+        Return: None
+        Info: Will tell the player his current stats.
+
+        player.showRank()
+        Return: None
+        Info: Will tell all the players on the server his rank.
+
+        player.delRace()
+        Return: None
+        Info: Will delete all records of the player.
+
+        player.delPlayer()
+        Return: None
+        Info: Will delete all records of the player's race.
+
+
+            3.2.2.1 - player
+            --------------------------------------------------------------------
+            player.player.UserID
+            Return: int
+            Info: The player's UserID
+
+            player.player.steamid
+            Return: str
+            Info: The player's steamid
+
+            player.player.currace
+            Return: str
+            Info: The player's current race
+
+            player.player.name
+            Return: str
+            Info: The player's name
+
+            player.player.totallevel
+            Return: int
+            Info: The player's totallevel
+
+            player.player.lastconnect
+            Return: str
+            Info: When he last disconnected
+
+            player.player.update()
+            Return: None
+            Info: Get the player's information from the SQL-file.
+                  This should not be called before .save() but after.
+
+            player.player.save()
+            Return: None
+            Info: Insert the player's information in the SQL-file.
+
+            3.2.2.2 - race
+            --------------------------------------------------------------------
+            player.race.UserID
+            Return: int
+            Info: The player's UserID
+
+            player.race.RaceID
+            Return: int
+            Info: The player's current race's RaceID
+
+            player.race.pplayer
+            Return: None
+            Info: Be able to use playerlib's functions
+
+            player.race.lang
+            Return: str
+            Info: The player's language
+
+            player.race.name
+            Return: str
+            Info: The player's current race's name
+
+            player.race.skills
+            Return: str
+            Info: The player's current race's skills
+
+            player.race.level
+            Return: int
+            Info: The player's current race's level
+
+            player.race.xp
+            Return: int
+            Info: The player's current race's xp
+
+            player.race.unused
+            Return: int
+            Info: The player's current race's unused
+
+            player.race.__contains__(int|str item)
+            Return: Bool
+            Info: Check weather or not a race exists by RaceID or name.
+
+            player.race.update()
+            Return: None
+            Info: Get the player's information from the SQL-file.
+                  This should not be called before .save() but after.
+
+            player.race.save()
+            Return: None
+            Info: Insert the player's information in the SQL-file.
+
+            player.race.refresh()
+            Return: None
+            Info: Can be called at any time but not really needed by scripters.
+
+            player.race.addXp(int|str amount [, str reason=''])
+            Return: int
+            Info: Will add xp to the player.
+
+            player.race.addLevel(int|str amount)
+            Return: int
+            Info: Will add level to the player.
+
+            player.race.addUnused(int|str amount)
+            Return: int
+            Info: Will add unused points to the player.
+
+            player.race.addPoint(int skill)
+            Return: int
+            Info: Will add a point to the player's skill if the player got atleast 1 unused.
+
+        3.2.3 - Database Functions
+        ------------------------------------------------------------------------
+        database.__len__()
+        Return: int
+        Info: Will return how many players there is in the database.
+
+        database.__contains__(int|str item)
+        Return: bool
+        Info: Check weather or not a user exists.
+
+        database.__del__()
+        Return: None
+        Info: Will save the database when it's called.
+
+        database.execute(str todo [, tuple args=None])
+        Return: None
+        Info: Execute SQL-statements.
+
+        database.fetchone()
+        Return: int|str
+        Info: None
+
+        database.fetchall()
+        Return: list
+        Info: None
+
+        database.save()
+        Return: None
+        Info: Will save (commit) the database.
+
+        database.close()
+        Return: None
+        Info: Will close the database.
+
+        database.getUserIdFromSteamId(str steamid)
+        Return: None|int
+        Info: Get the UserID from the steamid.
+
+        database.addPlayer(str steamid, str name)
+        Return: int
+        Info: Will add the player in the database.
+
+        database.getRaceIdFromUserIdAndRace(str steamid, str race)
+        Return: None|int
+        Info: Get the RaceID. Will return None if it doesn't exists.
+
+        database.addRaceIntoPlayer(str steamid, str race)
+        Return: int
+        Info: Will add the race in the database.
+
+        database.updateRank()
+        Return: None
+        Info: Update the ranks (will course lagg on large databases).
+
+        database.getRank(str steamid)
+        Return: int
+        Info: Get the player rank.
+
+4 - Notes
+--------------------------------------------------------------------------------
+    All addons should create their config file inside /config/ if required.
+
+    4.1 - Installation Method
+    ----------------------------------------------------------------------------
+    Addons are loaded by adding the addon name inside config/addons.txt
+    If it shouldn't be loaded, simple add a // in front of the addon.
+
+    Tools are loaded by adding the tool name inside config/tools.txt
+    If it shouldn't be loaded, simple add a // in front of the tool.
+
+    Any ability (which should be called from the command "ability") is added in
+    the tools/abilitys/<name> folder where <name> is the ability name.
+
+    Any ultimate (which should be called from the command "ultimate") is added in
+    the tools/ultimates/<name> folder where <name> is the ultimate name.
+
+    4.2 - Thanks to
+    ----------------------------------------------------------------------------
+    WCS was original by Kryptonite (date: Dec. 02, 2007, v0.77).
+    Ported to Python (date: July 27, 2010, $version).
+
+    Thanks to:
+        Kryptonite - The person who originally coded WCS
+            http://warcraft-source.com/board/index.php
+
+        Freddukes - Used some parts from his SourceRPG
+            http://addons.eventscripts.com/addons/view/sourcerpg
+
+        Craziest - Used his top10 from his rank script
+            http://addons.eventscripts.com/addons/view/crazyranking
+
+        Mattie - For creating EventScripts
+            http://www.mattie.net/
