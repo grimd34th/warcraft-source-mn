@@ -1,0 +1,379 @@
+Version v0.78.5g.4d:
+    [Added] smoother sqlite3 saving at wcs.py on line 217  (Thnx: To MaxLap)
+    [Added] database backing up for last 30 days (Thnx: To Pwned, MiB and Muerte)
+    [Changed] "spendslevels" command for levelbank2 to "wcsbank" (Changed: By Muerte)
+    [Fixed] fire effects in items.ini (Reported: By Chuck, Fixed: By Holliday)
+    [Fixed] commented out line 372 and 373 in wcs.py to prevent crashing (Fix: By Pwned)
+    [Fixed] addons/deatmatch hopefully not to crash (Fix: By Muerte)
+    [Fixed] addons/levelbank2 hopefully not to crash (Fix: By Muerte)
+    [Fixed] addons/other not to use es.give to prevent crash (Fix: By Muerte)
+    [Fixed] core/effect not to use es.give on smokestack to prevent crash (Fix: By Muerte)
+    [Fixed] reincarnation (Reported: By Lukas320)
+    [Fixed] orb of frost (Fix: By Kamiqawa)
+    [Fixed] locust swarm (Fix: By Kami)
+    [Fixed] mole (Fix: By Lukas, Kami, Muerte & Pwned)
+    [Fixed] chameleon spawn strings in strings.ini (Reported: By Lukas)
+    [Fixed] orcish horde's reincarnation skill (Reported: By Lukas)
+    [Fixed] core/effects to use spe.getEntityIndex instead of es.createentity (Fix: By Pwned & Muerte, Tracebacks by dAn!EL & Pookzabazz)
+    [Fixed] dm.py to use correct attribute and disabled "disconnected" logging (Fix: By Pwned & Muerte)
+    [Fixed] backups.py to use correct allignment (Fix: By Muerte)
+    [Fixed] core/expand not to use sexec anymore to prevent server crashes (Fix: By Muerte)
+    [Removed] goldmod (temporarily till 100% updated and working)
+
+Version v0.78.5g.4c:
+    [Added] wcs/tools/playerview (originally created by DoCky, edited by Muerte and Pwned)
+    [Added] randplayer, teleport and setaim to wcs/tools/ (Added from MiB's toolkit)
+    [Added] raceinfo: es wcs_raceinfo <var> <race> [<skill>] <key> (Requested by: Holliday)
+    [Added] getcolor to wcs/tools/ (Added by: Kami)
+    [Changed] wcs.py to enable player_ hurt/kill/say as standard to fix several shopmenu issues (reported by Kami)
+    [Fixed] wcs/core to wcs drug/changeteam wcsgroup ultimates (Fix by: MiB)
+    [Fixed] teleport not to teleport way to far in wcs/tools/ultimates/default/es_default.txt (Fix by: MiB)
+    [Fixed] restrict levels of shopmenu in wcs/core and items.ini (Fix by: Jhonam)
+    [Fixed] items.ini on line 59 (Reported by: Xuqe Noia)
+    [Fixed] weapon restrictions to drop weapons instead of removing them, this fixed the crash issue. Requires SPE. (Fix by: Pwned)
+    [Fixed] deathcmd issue (Fix by: Pwned)
+    [Fixed] drop in core/expand with sexec instead of cexec (Reported by: Grimston)
+    [Fixed] maximum = in wcs/core/changerace on line 251 (Reported by: Muerte)
+    [Fixed] allowonly in wcs/core/changerace (Fix by: Muerte)
+    [Fixed] popup pending can crash server (Fix by: Kami)
+    [Fixed] missing XP issue in wcs/wcs.py (Fix by: MiB)
+    [Fixed] multiple shopitems (Fix by: Kami)
+    [Fixed] teamlimit (Fix by: Kami)
+    [Fixed] wcs.py to fix missing userid in tell msg (Fix: By Pwned)
+    [Fixed] orcspawn effect to use give from wcs.core.expand instead of es.give (Fix: By Muerte)
+    [Fixed] slowdown issue (Fix: By Kami)
+    [Fixed] burn time issue (Fix: By Kami)
+    [Removed] misplaced files, and all .pyc files (Removed: By Muerte)
+
+Version v0.78.5g.4b:
+    [ADDED] The possibility to choose the maximum amount of items a player can buy in 1 item section (requested by: Druid)
+    [ADDED] Drunk in core/expand
+    [FIXED] core/wcstop to not raise a error when unpacking the values
+    [FIXED] core/expand spawn to properly respawn the player (fix by: MiB)
+    [FIXED] addons/shopmenu where it'd reset the cash on round end (only for games which is not CSS)
+    [FIXED] core/shopmenu where if you had 2 items, only 1 of them would get executed
+    [FIXED] extension/cstrike to not throw a error if the userid from the events is not found
+    [FIXED] strings/items.ini a typo in anti
+    [FIXED] addons/freelevels to not raise a error if the userid wasn't found (reported by: Psycho)
+    [FIXED] ultimates/default2 where roots would target your self, and not the enemys (reported by: HooHaa)
+    [FIXED] tools/commands in spawn where it'd see the 3rd arg are True no matter what the value was (reported by: MiB)
+    [FIXED] core/expand in damage where it'd raise a error if the damage was a float (reported by: MiB)
+    [FIXED] addons/wcsCadmin where it'd stop loading the addon (reported by: MiB)
+    [FIXED] addons/levelbank where it'd raise a error if the player wasn't in the database (reported by: Kami)
+    [FIXED] tools/setfx if there was a delay, it'd not get set to the correct value (thanks MiB)
+    [FIXED] ini/items.ini where it said "est_spawn" which'd be "wcs spawn"
+    [FIXED] addons/other to reset the "ulti_immunity" key (reported by: A lot)
+    [NEW FILES] core/restrict
+    [UPDATED] tools/console with a new command: wcs_getindex <var> <userid> (requested by: MiB)
+    [UPDATED] tools/svar/var.txt with tmp1-15 (requested by: MiB)
+    [UPDATED] core/expand with a new function: changeTeam (by MiB)
+    [UPDATED] tools/commands with a new command: changeteam
+    [UPDATED] tools/xrestrict to use the functions from core/restrict
+    [UPDATED] wcs/wcs.py to reload WCSadmins and WCSgroups on map start, so server owners can easily add new admins directly in the database
+    [UPDATED] ini/strings.ini with new text for shopmenu
+    [UPDATED] ini/items.ini with a new key (maxitems) for the categorys
+    [UPDATED] core/shopmenu to support maximum items in a specific category
+    [UPDATED] core/shopinfo with information to buy items with the "new" (I think I added it in v0.78.5g.2 or something) say/client command to buy items fast (which is wcsbuyitem)
+    [UPDATED] wcs/wcs.py the tell function, so it doesn't tell anything if the text is empty
+    [UPDATED] tools/nearcoord to use es.server.insertcmd() instead of es.server.queuecmd()
+    [UPDATED] core/expand in the damage function, so it gets executed in a better, while still doing its job
+    [UPDATED] core/expand drug with a new syntax
+    [UPDATED] tools/commands with a new version of drug and the new command: drunk
+    [UPDATED] extension/cstrike to include 4 new events for races and shopmenu items: hostage_rescued,bomb_planted,bomb_defused,bomb_exploded
+    [UPDATED] extension/cstrike to include 3 new events for races and shopmenu items: player_flashexplode,player_heexplode,player_smokeexplode (by MiB)
+
+Version v0.78.5g.4a Beta HF-3 (Hot Fix):
+    [FIXED] core/expand Respawning not working on dead peoples (by MiB)
+
+Version v0.78.5g.4a Beta HF-2 (Hot Fix):
+    [FIXED] tools/xrestrict Fixed restrictions not removeing weapons (by MiB)
+
+Version v0.78.5g.4a Beta HF (Hot Fix):
+    [FIXED] core/expand give method not to crash on Linux (by MiB)
+
+Version v0.78.5g.4a Beta:
+    [ADDED] Converted some of the ultimates in tools/ultimates/default to Python
+    [ADDED] A server command (wcs_reload_races) to reload the races (EXPERIMENTAL!)
+    [FIXED] wcs/wcs.py where it'd raise an error if there was a error in ini/races.ini (reported by: Maxolahird)
+    [FIXED] ini/races.ini where Blood Mage's first skill would raise an error
+    [FIXED] wcs/wcs.py where it'd raise "Bad format string in CLocalizeStringTable::ConstructString" when there was a %s but it wasn't used
+    [FIXED] core/expand spawn to not mess with the player's death flag when he was alive (by MiB)
+    [FIXED] tools/xcommands where it'd raise a error if the sub-command was wrong (reported by MiB)
+    [FIXED] tools/commands wcs_color where it'd raise a ValueError when the player had no weapons
+    [FIXED] ini/items.ini where Stone of Health would give a wrong text. Also updated it to use wcs_xtell (by MiB)
+    [FIXED] tools/setfx where there was giving wrong information, so it'd not work correctly (by MiB)
+    [FIXED] ini/strings.ini where there were mistakes in the Danish translation
+    [FIXED] tools/commands if you were using #health instead a integer in the damage field, it'd raise a error (reported by: MiB)
+    [FIXED] core/wcstop to not raise a error when a player wasn't found in the database (reported by: Maxolahird)
+    [FIXED] ini/races.ini Hex on Shadow Hunter where the chance was set to 3 instead of 30
+    [FIXED] core/changerace were it'd close the menu, if you were on spectate (reported by: VpS)
+    [NEW FILES] tools/ultimates/default2
+    [UPDATED] wcs/wcs.py with 3 events: wcs_changerace, wcs_gainxp and wcs_levelup
+    [UPDATED] core/shopmenu with 1 event: wcs_itembought
+    [UPDATED] core/expand with drug
+    [UPDATED] tools/commands with drug
+    [UPDATED] ini/races.ini to use wcs drug instead of est_drug
+    [UPDATED] core/expand with a new function: dealPoison (by MiB)
+    [UPDATED] tools/commands with a new command: poison (by MiB)
+    [UPDATED] ini/races.ini changed all block keys to cmd for stability
+    [UPDATED] core/expand getViewEntity to allow #-tags, so you can get what all players are looking at
+    [UPDATED] ini/strings.ini to have the text from the item Stone of Health
+    [UPDATED] wcs/wcs.py to restrict race with the limit reached
+    [UPDATED] ini/strings.ini with some missing text
+    [UPDATED] core/expand to accept armor (will damage armor, boolean) and a weapon name (requested by: MiB)
+    [UPDATED] tools/commands damage to accept 2 new args: armor and weapon
+    [UPDATED] ini/races.ini with optimized code (use event_var(es_(user/attacker)dead) instead of wcsx get isdead)
+    [UPDATED] tools/nearcoord to use es.server.queuecmd() instead of es.server.insertcmd(), so let's hope it won't crash
+
+Version v0.78.5g.4 Beta:
+    [ADDED] A variable to enable/disable the shopmenu (requested by: DanKill3r)
+    [ADDED] wcs_cfg_allowbotsreward (to (dis)allow players giving xp from killing bots) and wcs_cfg_allowbotsgetxp
+            (to (dis)allow bots gaining xp when killing enemys) (requested by: WorldWideGlide)
+    [FIXED] wcs/wcs.py to slay the player on racechange (fix by: Syrr0)
+    [FIXED] wcs/wcs.py where it'd try to send a delayed popup to an unknown player (hopefully)
+    [FIXED] tools/xcommands where it'd raise an error because logging wasn't a valid function (reported by: mudza)
+    [FIXED] tools/setfx to not give an error if no primary/secondary weapon was found
+    [FIXED] (Hopefully) tools/nearcoord where it'd crash the server
+    [FIXED] tools/setfx with the freeze command not being able to use teleports in maps
+    [FIXED] core/expand where getViewEntity/getViewPlayer could crash the server (also giving wrong information)
+    [FIXED] tools/effect from a typo (reported by MiB)
+    [FIXED] ini/races.ini where Blood Mage would continue respawning teammates (reported by: Kami)
+    [FIXED] core/group to not give a error if es_WCSgroups_db.txt wasn't found in wcs/data (reported by: Psycho)
+    [FIXED] ini/races.ini where Crypt Lord's ultimate (Locust Swarm) didn't gave any damage (reported by: Psycho)
+    [FIXED] ini/items.ini where Ring of Armor would give 120 HP when the game CSS (reported by: Psycho)
+    [FIXED] ini/races.ini with the spawn effect for Human Alliance, Flame Predator and Chameleon (reported by: Psycho)
+    [FIXED] tools/restrict to not crash. I'll eat my hat if it crash
+    [NEW FILES] ini/_backupraces.ini
+    [UPDATED] core/expand with 3 new functions: give, fire and extenguish (thanks MiB)
+    [UPDATED] tools/commands with 3 new commands: give, fire, extenguish
+    [UPDATED] tools/restrict to use wcs give, so it'll hopefully not crash
+    [UPDATED] wcs/wcs.py with ragdolls for multiple of games
+    [UPDATED] wcs/wcs.py with error messages, so if there was an error in a SQL statement it'll not stop the save progress
+    [UPDATED] wcs/wcs.py to see if there was an error in the racedatabase, if there was, it'll load the _backupraces.ini file instead to ensure WCS gets loaded
+    [UPDATED] tools/setfx to use wcs_color instead of wcsx set color
+    [UPDATED] tools/setfx to not use wcsx call burn/extenguish instead use wcs fire/extenguish
+    [UPDATED] wcs/wcs.py to use expand.damage instead of forcing the command "kill" on clients (requested by: MiB)
+    [UPDATED] core/expand in damage where damage could be #health (requested by: MiB)
+    [UPDATED] ini/strings.ini with PT language (thanks to: Maxolahird)
+
+Version v0.78.5g.3 Beta:
+    [ADDED] The possibility to see the current level of the race in changerace (requested by: Syrr0)
+    [FIXED] addons/levelbank and addons/levelbank2 to give levels to the target instead of the giver (reported by: HooHaa)
+    [FIXED] wcs/wcs.py where it'd raise a error, because a player had ' in their name (reported by: A lot)
+    [FIXED] ini/strings.ini with a missing key
+    [FIXED] Abilitys being carried over to the new race (reported by: Zimoich)
+    [FIXED] wcs/wcs.py to allow ultimate/ability on DoDs (reported by: La Muerte)
+    [FIXED] tools/restrict from a typo
+    [FIXED] tools/commands to not raise a error when calling either getviewentity and getviewplayer (reported by: Kami)
+    [FIXED] core/expand in function getViewPlayer and getViewEntity to return the proper value
+    [UPDATED] tools/commands with a new command: wcs_color (requested by: Jhonam)
+
+Version v0.78.5g.2 Beta:
+    [ADDED] wcs_game_css and wcs_game_dods for detection of CSS and DoDs
+    [ADDED] Possibility to restrict all items by using "ITEMS" in the restrictitem-key (requested by: Jareth)
+    [ADDED] Russian translation (thanks Jhonam)
+    [FIXED] core/spendskills to hopefully not raise an exception
+    [FIXED] Locust Swarm on Crypt Lord to attack the victim instead of him self (reported by: VpS)
+    [FIXED] wcs_exists and wcs_respawn to be an unknown variable (reported by: Jhonam)
+    [FIXED] Fixed a possible error which could lead to a crash (thanks GodJonez)
+    [UPDATED] extension/cstrike to work with multi-language
+    [UPDATED] ini/strings.ini with the correct translations for cstrike and dod
+    [UPDATED] (Hopefully) Full support to Day of Defeat: Source!
+
+Version v0.78.5g.1 Beta:
+    [ADDED] A server variable to save levels/xp every X round(s)
+    [ADDED] The correct item restriction to the races
+    [FIXED] core/changerace to work properly
+    [FIXED] core/shopmenu not buying an item
+    [FIXED] core/changerace to not say "private race" even though the player was allowed to use it (reported by: Maxolahird)
+    [UPDATED] core/shopmenu to accept item restriction
+
+Version v0.78.5g Beta:
+    [ADDED] A variable for EST, SPE and NT for ESS scripts (wcs_isest, wcs_isspe, wcs_isnt)
+    [ADDED] A check for the "setting" key in races was valid, so it'd not give a error message.
+    [ADDED] A teamlimit key (made a check to see if it was in the race (backwards compatible))
+    [ADDED] addons/keyinfo to show speciel information about the player.
+    [ADDED] German language text by Wcs-Lagerhaus
+    [FIXED] An error in tools/ultimates/default (reported by: VpS)
+    [FIXED] An error where the var wcs_mole was unknown (reported by: VpS)
+    [FIXED] An error in core/changerace if restrictteam was True (reported by: Sjdeany)
+    [FIXED] A bug in core/wcstop where it'd not give a message if there was less than 5 players in the database
+    [FIXED] A bug in addons/admin where it'd miss a player
+    [FIXED] core/admin and core/group not give a error if the database wasn't found
+    [FIXED] A bug where the levels wouldn't be saved on es_map_start
+    [FIXED] core/resetskills to not be bypassed
+    [FIXED] An error in wcs/wcs.py where it'd see "userid" as a unknown variable (reported by: MiB)
+    [FIXED] Ankh of Reincarnation
+    [FIXED] Levels getting saved if the server restart
+    [FIXED] core/dataAPI to work as intended (reported by: mattb)
+    [FIXED] wcs_restrict <userid> allow to restrict the weapons
+    [FIXED] tools/restrict to work properly
+    [FIXED] The items in items.ini to detect cstrike properly (reported by Psycho)
+    [UPDATED] core/expand with 2 new functions: keyHint
+    [UPDATED] tools/commands with keyhint
+    [UPDATED] tools/getlanguage to also search for "en" as the userid
+    [UPDATED] core/raceinfo to give a error if there were a skill missing in skillname and skilldescr
+
+Version v0.78.5f Beta:
+    [ADDED] Effects by Jareth
+    [FIXED] core/raceinfo to show all the text instead bites of it
+    [UPDATED] core/changerace with a new function: canUse
+    [UPDATED] core/raceinfo with a new look
+    [UPDATED] core/expand with 2 new functions: getViewPlayer, getViewEntity
+    [UPDATED] tools/commands with getviewplayer and getviewentity
+
+Version v0.78.5e Beta:
+    [ADDED] core/effect with a few great effect (ES-only). Possible to use EST, SPE and NT also
+    [FIXED] core/raceinfo to be able to click 8 and not dissapear
+    [FIXED] shopalias' to be executed
+    [FIXED] A few skills/ultimates in ini/races.ini
+    [FIXED] ability not always getting executed
+    [FIXED] Ultimate cooldown getting resetted when it failed
+    [FIXED] A bug in ini/strings.ini
+    [FIXED] wcs explode
+    [NEW FILES] core/effect
+    [NEW FILES] addons/cmdskillspy
+    [UPDATED] A few files to use wcsgroup instead of keygroups
+    [UPDATED] core/shopinfo and core/shopmenu to be faster, more handy and better looking
+    [UPDATED] tools/longjump to use expand.push
+    [UPDATED] core/raceinfo to show the proper information
+    [UPDATED] core/expand with removeWeapon (thanks MiB)
+    [UPDATED] tools/commands with removeweapon
+    [UPDATED] extension/cstrike to have 4 new events and added some configs from wcs.py
+
+Version v0.78.5d Beta:
+    [ADDED] Shopinfo
+    [ADDED] deathcmd for races - gets fired when the player die
+    [FIXED] push and pushto in core/expand (thanks to Biggy)
+    [FIXED] The correct skill setting getting executed
+    [FIXED] wcs/wcs.py to properly save players data
+    [NEW FILES] core/shopinfo
+    [UPDATED] core/changerace to only show the warning when you first goto the menu
+    [UPDATED] core/wcsmenu to allow selection of shopmenu and shopinfo
+    [UPDATED] ini/strings.ini with more language
+
+Version v0.78.5c Beta:
+    [ADDED] All the original shopitems from version 0.77
+    [ADDED] Easy management of SQLite files
+    [ADDED] Easy management of KeyGroups
+    [FIXED] wcs/wcs.py to not raise an exception when the player has first been added
+    [FIXED] Races' information being saved probaly
+    [FIXED] An incredible annoying bug (for me)
+    [FIXED] An DatabaseLocked-exception caused by not closing the database on unload... silly me...
+    [FIXED/UNCOMMENT] Where it wouldn't goto a next page (f0ck).
+    [NEW FILES] core/sqliteAPI
+    [NEW FILES] core/keyAPI
+    [UPDATED] addons/addons.py and tools/tools.py to load the files properly
+    [UPDATED] addons/admin with more logging (when they change flag)
+    [UPDATED] core/expand with 3 new commands: push, pushto (thanks to MiB) and gravity
+    [UPDATED] tools/console to support races which is not played by that user
+    [UPDATED] tools/commands to support push and pushto
+    [UPDATED] addons/resetaffect with new commands
+    [UPDATED] tools/xtell to allow #-args
+
+Version v0.78.5b Beta:
+    [ADDED] wcs_xweapon command for scripters. Syntax: wcs_xweapon <var> <weapon> <key>
+    [ADDED] Support for easy management of groups
+    [ADDED] Showskills: Watch your current skill-level and total of unused points
+    [NEW FILES] core/group
+    [NEW FILES] core/showskills
+    [NEW FILES] tools/xweapon
+    [UPDATED] wcs_setfx with new commands: jetpack, noblock, burn, cash and ulti_immunity
+    [UPDATED] wcs/wcs.py to support groups
+    [UPDATED] core/wcsmenu, so it'd display showskills
+    [UPDATED] core/expand with cleaner code
+    [REMOVED] wcs burn/extinguish (use wcsx call <userid> burn/extinguish instead)
+
+Version v0.78.5a Beta:
+    [ADDED] Possible to add/edit/remove admins in-game (wcsadmin)
+    [ADDED] wcs drop command for scripters. Syntax: wcs drop <userid> <weapon/slot/tag>
+    [ADDED] wcs burn command for scripters. Syntax: wcs burn <userid>
+    [ADDED] wcs extinguish command for scripters. Syntax: wcs extinguish <userid>
+    [ADDED] Danish language support (only text-messages!)
+    [ADDED] Support for color, weaponcolor, location, viewcoord in wcs set (Note: not wcs math/get!)
+    [ADDED] wcs call commands. Syntax: wcs call <userid> <function> (i.e. wcs call <userid> burn/extinguish)
+    [FIXED] An error in addons/thanks
+    [UPDATED] Multi-game features (not tested!)
+
+Version v0.78.5 Beta:
+    [ADDED] #team, #red, #blue, #grey and #darkgreen to wcs_xtell (only the first 4 or #darkgreen untill 101satoon101 comes up with an update to his saytextlib)
+    [ADDED] 101satoon101 to addons/thanks
+    [ADDED] wcs_trapt a skill by Stinkyfax. Works the same way as wcs_warden
+    [ADDED] 'onchange' to the races. It will get fired BEFORE the player changes his race (userid = wcs_userid) (perfect for unrestrict weapons)
+    [ADDED] Tags, so it'll display if the server use wcs
+    [ADDED] wcs_xcentertell command for scripters. Syntax: wcs_xcentertell <userid> <shortcut> <[arg1]> <[value1]>...
+    [ADDED] wcs strip command to be used for scripters. Syntax: wcs strip <userid>
+    [ADDED] Easy management of admins
+    [UPDATED] core/expand with a new command: strip
+    [UPDATED] tools/restrict to allow multi-game support (CSS and DODs)
+    [UPDATED] tools/setfx with a new command: noblock
+    [UPDATED] addons/admins to feature the new core/admin
+    [UPDATED] addons/levelbank to feature the new core/admin
+    [NEW FILES] core/admin
+    [NEW FILES] extension/hl2mp
+    [NEW FILES] extension/pvkii
+    [NEW FILES] extension/tf
+    [NEW FILES] tools/xcenter
+
+Version v0.78.4c Beta:
+    [ADDED] ability command for on-command skills.
+    [ADDED] ultimate command for on-command skills.
+    [ADDED] wcs_xtell command to be used for scripters. Syntax: wcs_xtell <userid> <shortcut> <[arg1]> <[value1]>...
+    [ADDED] wcs spawn command to be used for scripters. Syntax: wcs spawn <userid> <[force]>
+    [ADDED] Welcome text to newcomers
+    [ADDED] Mattie, Awuh0, Freddukes, Craziest, Kryptonite and my self to addons/thanks
+    [FIXED] Some errors in tools/xrestrict
+    [NEW FILES] addons/ability
+    [NEW FILES] addons/other
+    [NEW FILES] addons/thanks
+    [NEW FILES] addons/ultimate
+    [NEW FILES] config/addons.txt
+    [NEW FILES] config/tools.txt
+    [NEW FILES] core/expand
+    [NEW FILES] core/welcome
+    [NEW FILES] tools/abilitys
+    [NEW FILES] tools/nearcoord
+    [NEW FILES] tools/ultimates
+    [REMOVED] addons/skills
+    [REMOVED] ini/addons.ini
+    [REMOVED] ini/tools.ini
+
+Version v0.78.4b Beta:
+    [ADDED] wcs_mole_activate command to be used for scripts. Syntax: wcs_mole_activate <userid>
+    [ADDED] wcs_regeneration command to be used for scripts. Syntax: wcs_regeneration <userid> <amount> <time> <maxHP> <maxHeal> <radius>
+    [ADDED] wcs_getlanguage command to be used for scripters. Syntax: wcs_getlanguage <var> <userid> <text>
+    [UPDATED] The wcs.py file to use cmdlib instead of event player_say
+    [NEW FILES] addons/cmdskills
+    [NEW FILES] addons/match
+    [NEW FILES] tools/getlanguage
+
+Version v0.78.4a Beta:
+    [ADDED] Levelbank
+    [FIXED] The strings-command where it'd return None
+    [FIXED] Some errors in addons/admin
+    [FIXED] Players being able to use ultimate and ability while dead
+    [UPDATED] core/wcstop with sqlite-format
+    [NEW FILES] addons/levelbank
+
+Version v0.78.4 Beta:
+    [ADDED] Multi-language (not for popups)
+    [FIXED] Few mistakes in some files
+    [NEW FILES] addons/mysql
+    [NEW FILES] ini/strings
+    [REMOVED] The need for OORM
+
+Version v0.78.3d Beta:
+    [ADDED] The Succubus Hunter race
+    [FIXED] Possible fix for the UnboundLocalError-exception inside tools/keys
+    [FIXED] A TypeError-exception inside wcs
+    [FIXED] Where it'd pending the changerace menu when you clicked 8
+    [FIXED] Where it'd pending the raceinfo menu when you clicked 8 or 9
+
+Version v0.78.3c Beta:
+    [ADDED] wcs_setfx- and wcs_removefx-feature
+    [ADDED] Longjump-support
+    [ADDED] Backwards-compatibility with keyvalues
+    [FIXED] Changerace bugs
+    [NEW FILES] tools/setfx
+    [NEW FILES] tools/longjump
+    [NEW FILES] tools/keys

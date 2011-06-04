@@ -1,0 +1,46 @@
+event item_pickup
+{
+   es wcsgroup get reinc wcs_tmp11 event_var(userid)
+   if (server_var(wcs_tmp11) = 1) do
+   {
+      es playerget secondary wcs_res_wep_wep event_var(userid)
+      es playerget primary wcs_res_wep event_var(userid)
+   }
+}
+
+event player_death
+{
+   es wcsgroup get reinc wcs_tmp11 event_var(userid)
+   if (server_var(wcs_tmp11) = 1) do
+   {
+      es wcsgroup set died event_var(userid) 1
+      es wcsgroup set reinc event_var(userid) 0
+   }
+}
+
+event player_spawn
+{
+   es wcsgroup get reinc wcs_tmp11 event_var(userid)
+   if (server_var(wcs_tmp11) = 1) do
+   {
+      es_tell event_var(userid) #multi #green Ankh of Reincarnation: #default you will get your Weapons Back if you die !
+   }
+   es wcsgroup get died wcs_tmp13 event_var(userid)
+   if (server_var(wcs_tmp13) = 1) do
+   {
+      if (server_var(wcs_res_wep_wep) != 0) do
+      {
+         es wcs removeweapon event_var(userid) 2
+         es wcs give event_var(userid) server_var(wcs_res_wep_wep)
+         es_xset wcs_res_wep_wep 0
+      }
+      if (server_var(wcs_res_wep) != 0) do
+      {
+         es wcs removeweapon event_var(userid) 1
+         es wcs give event_var(userid) server_var(wcs_res_wep)
+         es_xset wcs_res_wep 0
+      }
+      es_tell event_var(userid) #multi #green Ankh of Reincarnation: #default you got your Weapons Back !
+      es wcsgroup set died event_var(userid) 0
+   }
+}

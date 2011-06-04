@@ -1,0 +1,36 @@
+event player_say
+{
+es_set wcs_health 0
+if (event_var(text) = health) do
+   {
+    es wcsgroup get health wcs_health event_var(userid)
+    if (server_var(wcs_health) = 1) do
+       {
+        es playerset healthadd event_var(userid) 100
+        es wcsgroup set health event_var(userid) 0
+        es wcsgroup set healthstone event_var(userid) 1
+        es_tell event_var(userid) #multi #lightgreenYou got 100 health
+       }
+   }
+}
+
+event player_spawn
+{
+es_set wcs_healthstone 0
+es_exists ex userid event_var(userid)
+if (server_var(ex) = 1) do
+   {
+    es wcsgroup get healthstone wcs_healthstone event_var(userid)
+    if (server_var(wcs_healthstone) = 1) do
+       {
+        es wcsgroup set health event_var(userid) 1
+        es_tell event_var(userid) #multi #lightgreenStone of health activated
+        }
+   }
+}
+
+event player_death
+{
+es wcsgroup set healthstone event_var(userid) 0
+es wcsgroup set health event_var(userid) 0
+}

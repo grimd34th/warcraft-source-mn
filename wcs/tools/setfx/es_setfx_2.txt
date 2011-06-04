@@ -1,0 +1,328 @@
+//Thanks to Kryptonite for his awesome work with wcs_removefx and wcs_setfx!
+
+
+block load
+{
+	es_xexists ex command wcs_removefx
+	if (server_var(ex) = 0) then es_xregcmd wcs_removefx wcs/tools/setfx/wcs_removefx "wcs_removefx <type> <userid> - Takes an effect from a player (type: freeze, speed, god)"
+	es_xexists ex command wcs_setfx
+	if (server_var(ex) = 0) then es_xregcmd wcs_setfx wcs/tools/setfx/wcs_setfx "wcs_setfx <type> <userid> <operator> <params> <[time]> - Gives an effect for a player"
+}
+
+block wcs_removefx
+{
+	es_xgetargv wcs_type 1
+	es_xgetargv wcs_removeid 2
+	es_exists ex userid server_var(wcs_removeid)
+	ifx true(ex) do
+	{
+		es wcsx get isdead wcs_dead server_var(wcs_removeid)
+		ifx false(wcs_dead) do
+		{
+			if (server_var(wcs_type) = "freeze") then wcsx set freeze server_var(wcs_removeid) 0
+			if (server_var(wcs_type) = "speed") do
+			{
+				es_xset wcs_speed 1.0
+				es_keygetvalue wcs_speed WCSuserdata server_var(wcs_removeid) speed
+				if (server_var(wcs_speed) != "0") then wcsx set speed server_var(wcs_removeid) server_var(wcs_speed)
+			}
+			if (server_var(wcs_type) = "god") then wcsx set godmode server_var(wcs_removeid) 0
+		}
+	}
+}
+
+block wcs_setfx
+{
+	es_xgetargv wcs_fxtype 1
+	es_xgetargv wcs_uid 2
+	es_xgetargv wcs_op 3
+	if (server_var(wcs_op) notin "=-+") then es_xset wcs_op "="
+	es_xgetargv wcs_params 4
+	es_xgetargv wcs_time 5
+	es_exists ex key WCSuserdata server_var(wcs_uid)
+	es_xset wcs_dead 1
+	if (server_var(ex) = 1) then wcsx get isdead wcs_dead server_var(wcs_uid)
+	if (server_var(wcs_dead) = 1) then es_xset ex 0
+	es_xcopy wcs_tmp wcs_uid
+	es_string wcs_tmp section 0 1
+	if (server_var(wcs_tmp) = #) then es_xset ex 1
+	if (server_var(wcs_fxtype) notin "freeze|jetpack|god|noblock|speed|invis|invisp|health|armor|cash|gravity|disguiser|1stclip|2ndclip|longjump") then es_xset ex 0
+	ifx true(ex) do
+	{
+		if (server_var(wcs_fxtype) = "freeze") do
+		{
+			ifx true(wcs_params) do
+			{
+				es wcs_foreach player wcs_uid server_var(wcs_uid) "es wcsx set freeze server_var(wcs_uid) 1;if (server_var(wcs_time) > 0) then es_xdelayed server_var(wcs_time) wcs_setfx freeze server_var(wcs_uid) = 0 0"
+			}
+			es_xelse do
+			{
+				es wcs_foreach player wcs_uid server_var(wcs_uid) "es wcsx set freeze server_var(wcs_uid) 0;if (server_var(wcs_time) > 0) then es_xdelayed server_var(wcs_time) wcs_setfx freeze server_var(wcs_uid) = 1 0"
+			}
+		}
+		if (server_var(wcs_fxtype) = "jetpack") do
+		{
+			ifx true(wcs_params) do
+			{
+				es wcs_foreach player wcs_uid server_var(wcs_uid) "es wcsx set jetpack server_var(wcs_uid) 1;if (server_var(wcs_time) > 0) then es_xdelayed server_var(wcs_time) wcs_setfx jetpack server_var(wcs_uid) = 0 0"
+			}
+			es_xelse do
+			{
+				es wcs_foreach player wcs_uid server_var(wcs_uid) "es wcsx set jetpack server_var(wcs_uid) 0;if (server_var(wcs_time) > 0) then es_xdelayed server_var(wcs_time) wcs_setfx jetpack server_var(wcs_uid) = 1 0"
+			}
+		}
+		if (server_var(wcs_fxtype) = "god") do
+		{
+			ifx true(wcs_params) do
+			{
+				es wcs_foreach player wcs_uid server_var(wcs_uid) "es wcsx set godmode server_var(wcs_uid) 1;if (server_var(wcs_time) > 0) then es_xdelayed server_var(wcs_time) wcs_setfx god server_var(wcs_uid) = 0 0"
+			}
+			es_xelse do
+			{
+				es wcs_foreach player wcs_uid server_var(wcs_uid) "es wcsx set godmode server_var(wcs_uid) 0;if (server_var(wcs_time) > 0) then es_xdelayed server_var(wcs_time) wcs_setfx god server_var(wcs_uid) = 1 0"
+			}
+		}
+		if (server_var(wcs_fxtype) = "noblock") do
+		{
+			ifx true(wcs_params) do
+			{
+				es wcs_foreach player wcs_uid server_var(wcs_uid) "es_setplayerprop server_var(wcs_uid) CBaseEntity.m_CollisionGroup 2;if (server_var(wcs_time) > 0) then es_xdelayed server_var(wcs_time) wcs_setfx noblock server_var(wcs_uid) = 0 0"
+			}
+			es_xelse do
+			{
+				es wcs_foreach player wcs_uid server_var(wcs_uid) "es_setplayerprop server_var(wcs_uid) CBaseEntity.m_CollisionGroup 5;if (server_var(wcs_time) > 0) then es_xdelayed server_var(wcs_time) wcs_setfx noblock server_var(wcs_uid) = 1 0"
+			}
+		}
+		if (server_var(wcs_fxtype) = "speed") do
+		{
+			es_xset wcs_effectdata 1.0
+			es_keygetvalue wcs_effectdata WCSuserdata server_var(wcs_uid) speed
+			es_xmath wcs_effectdata float
+			if (server_var(wcs_effectdata) = 0) then es_xset wcs_effectdata 1.0
+			if (server_var(wcs_time) > 0) then es_xdelayed server_var(wcs_time) wcs_setfx speed server_var(wcs_uid) = server_var(wcs_effectdata) 0
+			es wcsx math speed server_var(wcs_uid) server_var(wcs_op) server_var(wcs_params)
+			es wcsx get speed wcs_speed server_var(wcs_uid)
+			ifx parse("wcs_speed < 0") do
+			{
+				es wcsx set speed server_var(wcs_uid) 0
+				es_xset wcs_speed 0
+			}
+			es_keysetvalue WCSuserdata server_var(wcs_uid) speed server_var(wcs_speed)
+		}
+		if (server_var(wcs_fxtype) = "invis") do
+		{
+			wcs_xalias wcs_invischeck "if (server_var(wcs_effectdata) > 100) then es_xset wcs_effectdata 100.0;if (server_var(wcs_effectdata) <= 0) then es_xset wcs_effectdata 0.0;if (server_var(wcs_invis) > 255) then es_xset wcs_invis 255;if (server_var(wcs_invis) <= 0) then es_xset wcs_invis 0;es_xmath wcs_effectdata float;es_xmath wcs_invis float"
+			es_xset wcs_effectdata 0.0
+			es_keygetvalue wcs_effectdata WCSuserdata server_var(wcs_uid) invisp
+			if (server_var(wcs_effectdata) = 0) then es_xset wcs_effectdata 0
+			es_xmathparse wcs_invis "(wcs_effectdata - 100.0) * -2.55"
+			wcs_xalias wcs_invischeck
+			if (server_var(wcs_time) > 0) then es_xdelayed server_var(wcs_time) wcs_setfx invis server_var(wcs_uid) = server_var(wcs_invis) 0
+			if (server_var(wcs_op) = "=") do
+			{
+				es_xmathparse wcs_effectdata "(wcs_params / -2.55) + 100"
+				wcs_xalias wcs_invischeck
+				es playerset color server_var(wcs_uid) 255 255 255 server_var(wcs_params)
+				//es est_setplayercolor server_var(wcs_uid) 255 255 255 server_var(wcs_params) 1
+				es_keysetvalue WCSuserdata server_var(wcs_uid) invisp server_var(wcs_effectdata)
+			}
+			if (server_var(wcs_op) = "-") do
+			{
+				es_math wcs_invis - server_var(wcs_params)
+				es_xmathparse wcs_effectdata "(wcs_invis / -2.55) + 100"
+				wcs_xalias wcs_invischeck
+				es playerset color server_var(wcs_uid) 255 255 255 server_var(wcs_params)
+				//es est_setplayercolor server_var(wcs_uid) 255 255 255 server_var(wcs_invis) 1
+				es_keysetvalue WCSuserdata server_var(wcs_uid) invisp server_var(wcs_effectdata)
+			}
+			if (server_var(wcs_op) = "+") do
+			{
+				es_math wcs_invis + server_var(wcs_params)
+				es_xmathparse wcs_effectdata "(wcs_invis / -2.55) + 100"
+				wcs_xalias wcs_invischeck
+				es playerset color server_var(wcs_uid) 255 255 255 server_var(wcs_params)
+				//es est_setplayercolor server_var(wcs_uid) 255 255 255 server_var(wcs_invis) 1
+				es_keysetvalue WCSuserdata server_var(wcs_uid) invisp server_var(wcs_effectdata)
+			}
+		}
+		if (server_var(wcs_fxtype) = "invisp") do
+		{
+			wcs_xalias wcs_invischeck "if (server_var(wcs_effectdata) > 100) then es_xset wcs_effectdata 100.0;if (server_var(wcs_effectdata) <= 0) then es_xset wcs_effectdata 0.0;if (server_var(wcs_invis) > 255) then es_xset wcs_invis 255;if (server_var(wcs_invis) <= 0) then es_xset wcs_invis 0;es_xmath wcs_effectdata float;es_xmath wcs_invis float"
+			es_xset wcs_effectdata 0.0
+			es_keygetvalue wcs_effectdata WCSuserdata server_var(wcs_uid) invisp
+			if (server_var(wcs_effectdata) = 0) then es_xset wcs_effectdata 0
+			es_xmathparse wcs_invis "(wcs_effectdata - 100.0) * -2.55"
+			wcs_xalias wcs_invischeck
+			if (server_var(wcs_time) > 0) then es_xdelayed server_var(wcs_time) wcs_setfx invisp server_var(wcs_uid) = server_var(wcs_effectdata) 0
+			if (server_var(wcs_op) = "=") do
+			{
+				es_xmathparse wcs_invis "(wcs_params - 100.0) * -2.55"
+				wcs_xalias wcs_invischeck
+				es playerset color server_var(wcs_uid) 255 255 255 server_var(wcs_params)
+				//es est_setplayercolor server_var(wcs_uid) 255 255 255 server_var(wcs_invis) 1
+				es_keysetvalue WCSuserdata server_var(wcs_uid) invisp server_var(wcs_params)
+			}
+			if (server_var(wcs_op) = "-") do
+			{
+				es_math wcs_effectdata - server_var(wcs_params)
+				es_xmathparse wcs_invis "(wcs_effectdata - 100.0) * -2.55"
+				wcs_xalias wcs_invischeck
+				es playerset color server_var(wcs_uid) 255 255 255 server_var(wcs_params)
+				//es est_setplayercolor server_var(wcs_uid) 255 255 255 server_var(wcs_invis) 1
+				es_keysetvalue WCSuserdata server_var(wcs_uid) invisp server_var(wcs_effectdata)
+			}
+			if (server_var(wcs_op) = "+") do
+			{
+				es_math wcs_effectdata + server_var(wcs_params)
+				es_xmathparse wcs_invis "(wcs_effectdata - 100.0) * -2.55"
+				wcs_xalias wcs_invischeck
+				es playerset color server_var(wcs_uid) 255 255 255 server_var(wcs_params)
+				//es est_setplayercolor server_var(wcs_uid) 255 255 255 server_var(wcs_invis) 1
+				es_keysetvalue WCSuserdata server_var(wcs_uid) invisp server_var(wcs_effectdata)
+			}
+		}
+		if (server_var(wcs_fxtype) = "health") do
+		{
+			es wcs_foreach player wcs_uid server_var(wcs_uid) "es wcsx get health wcs_health server_var(wcs_uid);if (server_var(wcs_time) > 0) then es_xdelayed server_var(wcs_time) wcs_setfx health server_var(wcs_uid) = server_var(wcs_health) 0;es_math wcs_health server_var(wcs_op) server_var(wcs_params);if (server_var(wcs_health) > 0) then wcsx set health server_var(wcs_uid) server_var(wcs_health);if (server_var(wcs_health) <= 0) then wcs damage server_var(wcs_uid) server_var(wcs_uid) 1"
+		}
+		if (server_var(wcs_fxtype) = "armor") do
+		{
+			es wcs_foreach player wcs_uid server_var(wcs_uid) "es wcsx get armor wcs_armor server_var(wcs_uid);if (server_var(wcs_time) > 0) then es_xdelayed server_var(wcs_time) wcs_setfx armor server_var(wcs_uid) = server_var(wcs_armor) 0;es_math wcs_armor server_var(wcs_op) server_var(wcs_params);if (server_var(wcs_armor) > 0) then wcsx set armor server_var(wcs_uid) server_var(wcs_armor);if (server_var(wcs_armor) <= 0) then wcsx set armor server_var(wcs_uid) 0"
+		}
+		if (server_var(wcs_fxtype) == "cash") do
+		{
+			es wcs_foreach player wcs_uid server_var(wcs_uid) "es wcsx get cash wcs_cash server_var(wcs_uid);if (server_var(wcs_time) > 0) then es_xdelayed server_var(wcs_time) wcs_setfx cash server_var(wcs_uid) = server_var(wcs_cash) 0;es_math wcs_cash server_var(wcs_op) server_var(wcs_params);if (server_var(wcs_cash) > 0) then wcsx set cash server_var(wcs_uid) server_var(wcs_cash);if (server_var(wcs_cash) <= 0) then wcsx set cash server_var(wcs_uid) 0"
+		}
+		if (server_var(wcs_fxtype) = "gravity") do
+		{
+			es_xset wcs_effectdata 1.0
+			es_keygetvalue wcs_effectdata WCSuserdata server_var(wcs_uid) gravity
+			es_xmath wcs_effectdata float
+			if (server_var(wcs_effectdata) = 0) then es_xset wcs_effectdata 1.0
+			if (server_var(wcs_time) > 0) then es_xdelayed server_var(wcs_time) wcs_setfx gravity server_var(wcs_uid) = server_var(wcs_effectdata) 0
+			if (server_var(wcs_op) = "=") do
+			{
+				es est_setgravity server_var(wcs_uid) server_var(wcs_params)
+				es_keysetvalue WCSuserdata server_var(wcs_uid) gravity server_var(wcs_params)
+			}
+			if (server_var(wcs_op) = "-") do
+			{
+				es_math wcs_effectdata - server_var(wcs_params)
+				if (server_var(wcs_effectdata) <= 0) then es_xset wcs_effectdata 0
+				es est_setgravity server_var(wcs_uid) server_var(wcs_effectdata)
+				es_keysetvalue WCSuserdata server_var(wcs_uid) gravity server_var(wcs_effectdata)
+			}
+			if (server_var(wcs_op) = "+") do
+			{
+				es_math wcs_effectdata + server_var(wcs_params)
+				es est_setgravity server_var(wcs_uid) server_var(wcs_effectdata)
+				es_keysetvalue WCSuserdata server_var(wcs_uid) gravity server_var(wcs_effectdata)
+			}
+		}
+		if (server_var(wcs_fxtype) = "disguiser") do
+		{
+			es_xset wcs_model_a 0 "Foreign model"
+			es_xset wcs_model_b 0 "Team model"
+			es_getplayerteam wcs_team server_var(wcs_uid)
+			if (server_var(wcs_game) = cstrike) do
+			{
+				if (server_var(wcs_team) = 3) then es_xset wcs_model_a player/t_phoenix
+				if (server_var(wcs_team) = 2) then es_xset wcs_model_a player/ct_urban
+				if (server_var(wcs_team) = 3) then es_xset wcs_model_b player/ct_urban
+				if (server_var(wcs_team) = 2) then es_xset wcs_model_b player/t_phoenix
+			}
+			if (server_var(wcs_game) = dods) do
+			{
+				if (server_var(wcs_team) = 3) then es_xset wcs_model_a player/german_assault
+				if (server_var(wcs_team) = 2) then es_xset wcs_model_a player/american_assault
+				if (server_var(wcs_team) = 3) then es_xset wcs_model_b player/american_assault
+				if (server_var(wcs_team) = 2) then es_xset wcs_model_b player/german_assault
+			}
+			ifx true(wcs_params) do
+			{
+				es wcsx set model server_var(wcs_uid) server_var(wcs_model_a)
+				if (server_var(wcs_time) > 0) then es_xdelayed server_var(wcs_time) wcs_setfx disguiser server_var(wcs_uid) = 0 0
+			}
+			es_xelse do
+			{
+				es wcsx set model server_var(wcs_uid) server_var(wcs_model_b)
+				if (server_var(wcs_time) > 0) then es_xdelayed server_var(wcs_time) wcs_setfx disguiser server_var(wcs_uid) = 1 0
+			}
+		}
+		if (server_var(wcs_fxtype) = "longjump") do
+		{
+			es_xset wcs_effectdata 0
+			es_keygetvalue wcs_effectdata WCSuserdata server_var(wcs_uid) longjump
+			es_xmath wcs_effectdata float
+			if (server_var(wcs_effectdata) = 0) then es_xset wcs_effectdata 0
+			if (server_var(wcs_time) > 0) then es_xdelayed server_var(wcs_time) wcs_setfx longjump server_var(wcs_uid) = server_var(wcs_effectdata) 0
+			if (server_var(wcs_op) = "=") do
+			{
+				es_keysetvalue WCSuserdata server_var(wcs_uid) longjump server_var(wcs_params)
+			}
+			if (server_var(wcs_op) = "-") do
+			{
+				es_math wcs_effectdata - server_var(wcs_params)
+				if (server_var(wcs_effectdata) <= 0) then es_xset wcs_effectdata 0
+				es_keysetvalue WCSuserdata server_var(wcs_uid) longjump server_var(wcs_effectdata)
+			}
+			if (server_var(wcs_op) = "+") do
+			{
+				es_math wcs_effectdata + server_var(wcs_params)
+				es_keysetvalue WCSuserdata server_var(wcs_uid) longjump server_var(wcs_effectdata)
+			}
+		}
+		if (server_var(wcs_fxtype) = "1stclip") do
+		{
+			es_xset wcs_effectdata 0
+			es_keygetvalue wcs_effectdata WCSuserdata server_var(wcs_uid) 1stclip
+			es_xmath wcs_effectdata float
+			if (server_var(wcs_effectdata) = 0) then playerget clip wcs_effectdata server_var(wcs_uid) 1
+			if (server_var(wcs_time) > 0) then es_xdelayed server_var(wcs_time) wcs_setfx 1stclip server_var(wcs_uid) = server_var(wcs_effectdata) 0
+			if (server_var(wcs_op) = "=") do
+			{
+				es_keysetvalue WCSuserdata server_var(wcs_uid) 1stclip server_var(wcs_params)
+				es playerset clip server_var(wcs_uid) 1 server_var(wcs_params)
+			}
+			if (server_var(wcs_op) = "-") do
+			{
+				es_math wcs_effectdata - server_var(wcs_params)
+				if (server_var(wcs_effectdata) <= 0) then es_xset wcs_effectdata 0
+				es_keysetvalue WCSuserdata server_var(wcs_uid) 1stclip server_var(wcs_effectdata)
+				es playerset clip server_var(wcs_uid) 1 server_var(wcs_effectdata)
+			}
+			if (server_var(wcs_op) = "+") do
+			{
+				es_math wcs_effectdata + server_var(wcs_params)
+				es_keysetvalue WCSuserdata server_var(wcs_uid) 1stclip server_var(wcs_effectdata)
+				es playerset clip server_var(wcs_uid) 1 server_var(wcs_effectdata)
+			}
+		}
+		if (server_var(wcs_fxtype) = "2ndclip") do
+		{
+			es_xset wcs_effectdata 0
+			es_keygetvalue wcs_effectdata WCSuserdata server_var(wcs_uid) 2ndclip
+			es_xmath wcs_effectdata float
+			if (server_var(wcs_effectdata) = 0) then playerget clip wcs_effectdata server_var(wcs_uid) 2
+			if (server_var(wcs_time) > 0) then es_xdelayed server_var(wcs_time) wcs_setfx 2ndclip server_var(wcs_uid) = server_var(wcs_effectdata) 0
+			if (server_var(wcs_op) = "=") do
+			{
+				es_keysetvalue WCSuserdata server_var(wcs_uid) 2ndclip server_var(wcs_params)
+				es playerset clip server_var(wcs_uid) 2 server_var(wcs_params)
+			}
+			if (server_var(wcs_op) = "-") do
+			{
+				es_math wcs_effectdata - server_var(wcs_params)
+				if (server_var(wcs_effectdata) <= 0) then es_xset wcs_effectdata 0
+				es_keysetvalue WCSuserdata server_var(wcs_uid) 2ndclip server_var(wcs_effectdata)
+				es playerset clip server_var(wcs_uid) 2 server_var(wcs_effectdata)
+			}
+			if (server_var(wcs_op) = "+") do
+			{
+				es_math wcs_effectdata + server_var(wcs_params)
+				es_keysetvalue WCSuserdata server_var(wcs_uid) 2ndclip server_var(wcs_effectdata)
+				es playerset clip server_var(wcs_uid) 2 server_var(wcs_effectdata)
+			}
+		}
+	}
+}

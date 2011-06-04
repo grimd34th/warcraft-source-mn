@@ -1,0 +1,220 @@
+block load
+{
+	es_xexists ex command wcs_mole_activate
+	if (server_var(ex) = 0) then es_xregcmd wcs_mole_activate wcs/addons/cmdskills/wcs_mole_activate "A player becomes a mole"
+	es_xexists ex command wcs_warden
+	if (server_var(ex) = 0) then es_xregcmd wcs_warden wcs/addons/cmdskills/wcs_warden "Warden, deals damage on nearby enemies"
+	es_xexists ex command wcs_trap
+	if (server_var(ex) = 0) then es_xregcmd wcs_trap wcs/addons/cmdskills/wcs_trap "Trap, deals damage and slows on nearby enemies"
+	es_xexists ex command wcs_heal
+	if (server_var(ex) = 0) then es_xregcmd wcs_heal wcs/addons/cmdskills/wcs_heal "Healing Ward, heals nearby friendly units"
+	es_xexists ex command wcs_regeneration
+	if (server_var(ex) = 0) then es_xregcmd wcs_regeneration wcs/addons/cmdskills/wcs_regeneration "wcs_regeneration <userid> <amount> <time> <maxHP> <maxHeal> <radius> - Regenerate player for the current round"
+}
+
+//block wcs_mole_activate
+//{
+//	wcs_debug Canceled wcs_mole_activate (crash)
+//}
+
+block wcs_mole_activate
+{
+	es_xgetargv wcs_uid 1
+	es_exists ex userid server_var(wcs_uid)
+	ifx true(ex) do
+	{
+		es_xset wcs_team_target 0
+		es_getplayerteam wcs_team server_var(wcs_uid)
+		if (server_var(wcs_team) = 2) do
+		{
+			es_xset wcs_team_target 3
+			es_xset wcs_team_targetn "#ct#alive"
+		}
+		if (server_var(wcs_team) = 3) do
+		{
+			es_xset wcs_team_target 2
+			es_xset wcs_team_targetn "#t#alive"
+		}
+		ifx parse("wcs_team_target > 1") do
+		{
+			es_xset wcs_pcount 0
+			es_getlivingplayercount wcs_pcount server_var(wcs_team_target)
+			ifx parse("wcs_pcount > 0") do
+			{
+				es_xset wcs_player 0
+				if (server_var(wcs_team) = 3) then playerset model server_var(wcs_uid) "player/t_phoenix"
+				if (server_var(wcs_team) = 2) then playerset model server_var(wcs_uid) "player/ct_urban"
+				es getrandplayer wcs_player server_var(wcs_team_targetn)
+				es_exists ex userid server_var(wcs_player)
+				ifx true(ex) do
+				{
+					es_getplayerlocation wcs_x wcs_y wcs_z server_var(wcs_player)
+					es_set wcs_tmp server_var(mp_freezetime)
+					es_xmath wcs_tmp + 3
+					es_delayed server_var(mp_freezetime) wcs_xtell server_var(wcs_uid) "cmdskills: teleported mole"
+					es_delayed server_var(wcs_tmp) es_xsetpos server_var(wcs_uid) server_var(wcs_x) server_var(wcs_y) server_var(wcs_z)
+					es wcsgroup set ismole server_var(wcs_uid) 1
+				}
+				es_delayed server_var(mp_freezetime) wcs_xtell server_var(wcs_uid) "cmdskills: mole"
+			}
+			else do
+			{
+				es wcs_xtell server_var(wcs_uid) "cmdskills: mole failed"
+			}
+		}
+		else do
+		{
+			es wcs_xtell server_var(wcs_uid) "cmdskills: mole failed"
+		}
+	}
+}
+
+block wcs_warden
+{
+	es_xset wcs_uid 0
+	es_xset wcs_duration 0
+	es_xset wcs_dmg 0
+	es_xset wcs_radius 0
+	es_xset wcs_team_target 0
+	es_xset wcs_wardenround 0
+	es_xgetargv wcs_uid 1
+	es_xgetargv wcs_duration 2
+	es_xgetargv wcs_dmg 3
+	es_xgetargv wcs_radius 4
+	es_xgetargv wcs_team_target 5
+	es_xgetargv wcs_team_targetn 6
+	es_xgetargv wcs_x1 7
+	es_xgetargv wcs_y1 8
+	es_xgetargv wcs_z1 9
+	es_xgetargv wcs_wardenround 10
+	es_exists ex userid server_var(wcs_uid)
+	es_getlivingplayercount wcs_alive server_var(wcs_team_target)
+	ifx parse("(wcs_alive >= 1) and (wcs_wardenround == wcs_wardencounter) and ex and (wcs_duration > 0) and (wcs_radius != 0) and (wcs_team_target != 0)") do
+	{
+		es_xset wcs_wall 1
+		//effect.effect.BlueCircle((x,y,z+38), BaseSpread=28, Rate=173, RenderColor=(252,232,131), Twist=15, Delayed=2.5)
+		//es wcs_effect bluecircle server_var(wcs_x1) server_var(wcs_y1) server_var(wcs_z1) 100 200 0 20 4 1 200 55 255 150 100 200 255 effects\combinemuzzle2.vmt 0 0 0 0 1
+		es wcs_effect bluecircle server_var(wcs_x1) server_var(wcs_y1) server_var(wcs_z1) 100 10 1 15 5 1 250 10 255 255 255 255 200 effects\combinemuzzle2.vmt 0 0 0 0 10
+		es wcs_effect bluecircle server_var(wcs_x1) server_var(wcs_y1) server_var(wcs_z1) 120 10 1 15 5 1 250 10 255 255 255 255 200 effects\combinemuzzle2.vmt 0 0 0 0 10
+		wcs_xalias wcs_run_warden "es_getplayerlocation wcs_x2 wcs_y2 wcs_z2 server_var(wcs_targetid);wcs_xalias spec_checkwall;if (server_var(wcs_wall) = 0) then wcs_xalias wcs_run_warden2"
+		wcs_xalias wcs_run_warden2 "es_xset wcs_sward_resist 0; es wcsgroup get swardinvul wcs_sward_resist server_var(wcs_targetid);es_xcopy wcs_damage wcs_dmg; if (server_var(wcs_sward_resist) = 0) then es_xmath wcs_damage / 2;es wcs_setfx speed server_var(wcs_targetid) = 0.7 2;if (server_var(wcs_sward_resist) = 0) then wcs_xalias wcs_run_warden3"
+		wcs_xalias wcs_run_warden3 "es wcs damage server_var(wcs_targetid) server_var(wcs_uid) server_var(wcs_damage);es wcs_xtell server_var(wcs_targetid) a_wardenhit"
+		es wcs_nearcoord wcs_targetid server_var(wcs_team_targetn) server_var(wcs_x1) server_var(wcs_y1) server_var(wcs_z1) server_var(wcs_radius) "es wcsx get isdead wcs_dead server_var(wcs_targetid);if (server_var(wcs_dead) == 0) then wcs_xalias wcs_run_warden"
+		es_xmath wcs_duration - 1
+		es_delayed 1 wcs_warden server_var(wcs_uid) server_var(wcs_duration) server_var(wcs_dmg) server_var(wcs_radius) server_var(wcs_team_target) server_var(wcs_team_targetn) server_var(wcs_x1) server_var(wcs_y1) server_var(wcs_z1) server_var(wcs_wardenround)
+	}
+}
+
+block wcs_trap
+{
+	es_xset wcs_uid 0
+	es_xset wcs_duration 0
+	es_xset wcs_dmg 0
+	es_xset wcs_radius 0
+	es_xset wcs_team_target 0
+	es_xset wcs_wardenround 0
+	es_xgetargv wcs_uid 1
+	es_xgetargv wcs_duration 2
+	es_xgetargv wcs_dmg 3
+	es_xgetargv wcs_radius 4
+	es_xgetargv wcs_team_target 5
+	es_xgetargv wcs_team_targetn 6
+	es_xgetargv wcs_x1 7
+	es_xgetargv wcs_y1 8
+	es_xgetargv wcs_z1 9
+	es_xgetargv wcs_wardenround 10
+	es_exists ex userid server_var(wcs_uid)
+	es_getlivingplayercount wcs_alive server_var(wcs_team_target)
+	ifx parse("(wcs_alive >= 1) and (wcs_wardenround == wcs_trapcounter) and ex and (wcs_duration > 0) and (wcs_radius != 0) and (wcs_team_target != 0)") do
+	{
+		es_xset wcs_wall 1
+		wcs_xalias wcs_run_trap "es_getplayerlocation wcs_x2 wcs_y2 wcs_z2 server_var(wcs_targetid);wcs_xalias spec_checkwall;if (server_var(wcs_wall) = 0) then wcs_xalias wcs_run_trap2"
+		wcs_xalias wcs_run_trap2 "es wcs_setfx speed server_var(wcs_targetid) = 0.3 2;es wcs damage server_var(wcs_targetid) server_var(wcs_uid) server_var(wcs_dmg);es wcs_xtell server_var(wcs_targetid) a_traphit"
+		es wcs_nearcoord wcs_targetid server_var(wcs_team_targetn) server_var(wcs_x1) server_var(wcs_y1) server_var(wcs_z1) server_var(wcs_radius) server_var(wcs_radius) server_var(wcs_radius) "es wcsx get isdead wcs_dead server_var(wcs_targetid);if (server_var(wcs_dead) = 0) then wcs_xalias wcs_run_trap"
+		es_xmath wcs_duration - 1
+		es_delayed 1 wcs_trap server_var(wcs_uid) server_var(wcs_duration) server_var(wcs_dmg) server_var(wcs_radius) server_var(wcs_team_target) server_var(wcs_team_targetn) server_var(wcs_x1) server_var(wcs_y1) server_var(wcs_z1) server_var(wcs_wardenround)
+	}
+}
+
+block wcs_heal
+{
+	es_xset wcs_uid 0
+	es_xset wcs_duration 0
+	es_xset wcs_dmg 0
+	es_xset wcs_radius 0
+	es_xset wcs_team_target 0
+	es_xset wcs_healround 0
+	es_xgetargv wcs_uid 1
+	es_xgetargv wcs_duration 2
+	es_xgetargv wcs_dmg 3
+	es_xgetargv wcs_radius 4
+	es_xgetargv wcs_team_target 5
+	es_xgetargv wcs_team_targetn 6
+	es_xgetargv wcs_x1 7
+	es_xgetargv wcs_y1 8
+	es_xgetargv wcs_z1 9
+	es_xgetargv wcs_healround 10
+	es_exists ex userid server_var(wcs_uid)
+	es_getlivingplayercount wcs_alive server_var(wcs_team_target)
+	ifx parse("(wcs_alive >= 1) and (wcs_healround == wcs_healcounter) and ex and (wcs_duration > 0) and (wcs_radius != 0) and (wcs_team_target != 0)") do
+	{
+		es_xset wcs_wall 1
+		wcs_xalias wcs_run_heal  "es_getplayerlocation wcs_x2 wcs_y2 wcs_z2 server_var(wcs_targetid);wcs_xalias spec_checkwall;if (server_var(wcs_wall) = 0) then wcs_xalias wcs_run_heal2"
+		wcs_xalias wcs_run_heal2 "es wcs_setfx health server_var(wcs_targetid) + 3 0;es wcs_xtell server_var(wcs_targetid) a_healhit"
+		es wcs_nearcoord wcs_targetid server_var(wcs_team_targetn) server_var(wcs_x1) server_var(wcs_y1) server_var(wcs_z1) server_var(wcs_radius) "es wcsx get isdead wcs_dead server_var(wcs_targetid);if (server_var(wcs_dead) = 0) then wcs_xalias wcs_run_heal"
+		es_xmath wcs_duration - 1
+		es_delayed 1 wcs_heal server_var(wcs_uid) server_var(wcs_duration) server_var(wcs_dmg) server_var(wcs_radius) server_var(wcs_team_target) server_var(wcs_team_targetn) server_var(wcs_x1) server_var(wcs_y1) server_var(wcs_z1) server_var(wcs_healround)
+	}
+}
+
+block wcs_regeneration
+{
+	es_xgetargv wcs_uid 1
+	es_xgetargv wcs_amount 2
+	es_xgetargv wcs_time 3
+	es_xgetargv wcs_maxhp 4
+	es_xgetargv wcs_maxheal 5
+	es_xgetargv wcs_radius 6
+	es_exists ex key WCSuserdata server_var(wcs_uid)
+	ifx parse("(ex == 1) and (wcs_time >= 1)") do
+	{
+		es_xset wcs_regenerate 0
+		//es_keygetvalue wcs_regenerate WCSuserdata server_var(wcs_uid) regeneration
+		es wcsgroup get regeneration wcs_regenerate server_var(wcs_uid)
+		//es_keygetvalue wcs_round WCSuserdata server_var(wcs_uid) regen_round
+		es wcsgroup get regen_round wcs_round server_var(wcs_uid)
+		ifx parse("(wcs_regenerate == 1) and (wcs_roundcounter == wcs_round)") do
+		{
+			es wcsx get isdead wcs_dead server_var(wcs_uid)
+			ifx parse("((wcs_maxheal > 0) or (wcs_maxheal == -1)) and (wcs_dead == 0)") do
+			{
+				if (server_var(wcs_maxheal) != -1) then es_xif (server_var(wcs_maxheal) != 0) then es_xmath wcs_maxheal - 1
+				ifx true(wcs_radius) do
+				{
+					es_getplayerlocation wcs_x1 wcs_y1 wcs_z1 server_var(wcs_uid)
+					es_getplayerteam wcs_team server_var(wcs_uid)
+					if (server_var(wcs_team) = 2) then es_xset wcs_team "#t,#alive"
+					if (server_var(wcs_team) = 3) then es_xset wcs_team "#ct,#alive"
+					wcs_xalias wcs_run_heal "es wcsx get health wcs_health server_var(wcs_targetid);es_math wcs_health + server_var(wcs_amount);if (server_var(wcs_maxhp) > 0) then es_xif (server_var(wcs_maxhp) >= server_var(wcs_health)) then wcs_xalias wcs_run_heal1;if (server_var(wcs_maxhp) = -1) then wcs_xalias wcs_run_heal1"
+					wcs_xalias wcs_run_heal1 "es wcs_setfx health server_var(wcs_targetid) + server_var(wcs_amount) 0;es wcs_xtell server_var(wcs_targetid) a_regenhit"
+					es wcs_nearcoord wcs_targetid server_var(wcs_team) server_var(wcs_x1) server_var(wcs_y1) server_var(wcs_z1) server_var(wcs_radius) "wcs_xalias wcs_run_heal"
+					es_delayed server_var(wcs_time) wcs_regeneration server_var(wcs_uid) server_var(wcs_amount) server_var(wcs_time) server_var(wcs_maxhp) server_var(wcs_maxheal) server_var(wcs_radius)
+				}
+				else do
+				{
+					es wcsx get health wcs_health server_var(wcs_uid)
+					es_math wcs_health + server_var(wcs_amount)
+					if (server_var(wcs_maxhp) > 0) then es_xif (server_var(wcs_maxhp) >= server_var(wcs_health)) then wcs_setfx health server_var(wcs_uid) + server_var(wcs_amount) 0
+					if (server_var(wcs_maxhp) = -1) then wcs_setfx health server_var(wcs_uid) + server_var(wcs_amount) 0
+					es wcs_xtell server_var(wcs_uid) a_regenhit
+					es_delayed server_var(wcs_time) wcs_regeneration server_var(wcs_uid) server_var(wcs_amount) server_var(wcs_time) server_var(wcs_maxhp) server_var(wcs_maxheal) "0"
+				}
+			}
+		}
+		else do
+		{
+			//es_keysetvalue WCSuserdata server_var(wcs_uid) regen_round 0
+			es wcsgroup set regen_round server_var(wcs_uid) 0
+		}
+	}
+}

@@ -1,0 +1,83 @@
+block heal
+{
+	es_xset wcs_ability_count 0
+	//es_keygetvalue wcs_ability_count WCSuserdata server_var(wcs_userid) ability_count
+	es wcsgroup get ability_count wcs_ability_count server_var(wcs_userid)
+	ifx parse("(wcs_ability_count > 0) or (wcs_ability_count == -1)") do
+	{
+		es_xset wcs_params 0
+		//es_keygetvalue wcs_params WCSuserdata server_var(wcs_userid) "ability_parameter"
+		es wcsgroup get ability_parameter wcs_params server_var(wcs_userid)
+		if (server_var(wcs_params) != "0") do
+		{
+			es_getplayerteam wcs_team server_var(wcs_userid)
+			es_xset wcs_color "10 0 255"
+			ifx parse("wcs_team == 2") do
+			{
+				es_xset wcs_team_target 2
+				es_xset wcs_team_targetn "#t"
+				es_xset wcs_color "215 0 35"
+			}
+			ifx parse("wcs_team == 3") do
+			{
+				es_xset wcs_team_target 3
+				es_xset wcs_team_targetn "#ct"
+				es_xset wcs_color "25 0 255"
+			}
+			es_getplayerlocation wcs_x1 wcs_y1 wcs_z1 server_var(wcs_userid)
+			es_xset wcs_duration 0
+			es_token wcs_duration server_var(wcs_params) 1 "_"
+			ifx true(wcs_graphicfx) do
+			{
+				es_xcopy wcs_x2 wcs_x1
+				es_xcopy wcs_y2 wcs_y1
+				es_xcopy wcs_z2 wcs_z1
+				es_xmath wcs_z1 + 120
+				es_xset vector1 wcs_z1
+				es_xset vector2 wcs_z2
+				es_createvectorstring vector1 server_var(wcs_x1) server_var(wcs_y1) server_var(wcs_z1)
+				es_createvectorstring vector2 server_var(wcs_x2) server_var(wcs_y2) server_var(wcs_z2)
+				es est_effect_19 #a 0 server_var(vector1) server_var(vector2) 100
+				es est_effect_18 #a 0 server_var(vector1) 255 50 25 144 server_var(wcs_radius) 3 18
+				es wcs give server_var(wcs_userid) env_Smokestack
+				es_fire server_var(wcs_userid) env_Smokestack addoutput "classname smokey"
+				es_fire server_var(wcs_userid) smokey addoutput "basespread 15"
+				es_fire server_var(wcs_userid) smokey addoutput "spreadspeed 30"
+				es_fire server_var(wcs_userid) smokey addoutput "speed 60"
+				es_fire server_var(wcs_userid) smokey addoutput "startsize 5"
+				es_fire server_var(wcs_userid) smokey addoutput "endsize 1"
+				es_fire server_var(wcs_userid) smokey addoutput "rate 200"
+				es_fire server_var(wcs_userid) smokey addoutput "jetlength 175"
+				es_fire server_var(wcs_userid) smokey addoutput "twist 175"
+				es_fire server_var(wcs_userid) smokey addoutput "SmokeMaterial particle\fire.vmt"
+				es_fire server_var(wcs_userid) smokey addoutput "angles 0 0 0"
+				es_fire server_var(wcs_userid) smokey addoutput "renderamt 100"
+				es_fire server_var(wcs_userid) smokey addoutput "rendercolor 100 100 220"
+				es_fire server_var(wcs_userid) smokey turnon
+				es_delayed 8 es_xfire server_var(wcs_userid) smokey kill
+				es_xmath wcs_z1 - 120
+			}
+			es_token wcs_dmg server_var(wcs_params) 2 "_"
+			es_token wcs_radius server_var(wcs_params) 3 "_"
+			es wcs_heal server_var(wcs_userid) server_var(wcs_duration) server_var(wcs_dmg) server_var(wcs_radius) server_var(wcs_team_target) server_var(wcs_team_targetn) server_var(wcs_x1) server_var(wcs_y1) server_var(wcs_z1) server_var(wcs_healcounter)
+			es wcs_xtell server_var(wcs_userid) a_healcreated
+		}
+		es_xmath wcs_ability_count - 1
+		//es_keysetvalue WCSuserdata server_var(wcs_userid) ability_count server_var(wcs_ability_count)
+		es wcsgroup set ability_count server_var(wcs_userid) server_var(wcs_ability_count)
+	}
+	else do
+	{
+		es wcs_xtell server_var(wcs_userid) a_failed
+	}
+}
+
+event round_start
+{
+	es_xmath wcs_healcounter + 1
+}
+
+event round_start
+{
+	es_xmath wcs_healcounter - 1
+}
